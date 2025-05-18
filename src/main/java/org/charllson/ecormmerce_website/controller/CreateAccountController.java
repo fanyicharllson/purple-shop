@@ -1,0 +1,249 @@
+package org.charllson.ecormmerce_website.controller;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.application.HostServices;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
+public class CreateAccountController implements Initializable {
+
+    // Email validation pattern
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    @FXML
+    private TextField fullNameField;
+
+    @FXML
+    private TextField emailField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private TextField visiblePasswordField;
+    @FXML
+    private PasswordField confirmPasswordField;
+    @FXML
+    private CheckBox showPasswordCheckBox;
+    @FXML
+    private CheckBox termsCheckBox;
+    @FXML
+    private Button createAccountButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private ProgressBar strengthBar;
+    @FXML
+    private Label strengthLabel;
+    @FXML
+    private VBox formContainer;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Apply entrance animations
+        applyEntranceAnimations();
+
+        // Initialize form validation
+        setupFormValidation();
+
+        // Disable the create account button initially
+        createAccountButton.setDisable(true);
+    }
+
+    private void applyEntranceAnimations() {
+        // Fade in and slide up animation for the form
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(800), formContainer);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        TranslateTransition slideUp = new TranslateTransition(Duration.millis(800), formContainer);
+        slideUp.setFromY(50);
+        slideUp.setToY(0);
+
+        // Play animations
+        fadeIn.play();
+        slideUp.play();
+    }
+
+    private void setupFormValidation() {
+        // Listen for changes in all fields to validate the form
+        fullNameField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        emailField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        confirmPasswordField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        termsCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> validateForm());
+    }
+
+    private void validateForm() {
+        boolean isValid = !fullNameField.getText().trim().isEmpty() &&
+                isValidEmail(emailField.getText().trim()) &&
+                isValidPassword(passwordField.getText()) &&
+                passwordField.getText().equals(confirmPasswordField.getText()) &&
+                termsCheckBox.isSelected();
+
+        createAccountButton.setDisable(!isValid);
+    }
+
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    private boolean isValidPassword(String password) {
+        // Password must be at least 8 characters
+        return password.length() >= 8;
+    }
+
+    @FXML
+    private void updatePasswordStrength() {
+        String password = passwordField.getText();
+        double strength = calculatePasswordStrength(password);
+
+        strengthBar.setProgress(strength);
+
+        // Update strength label and style classes
+        if (strength < 0.4) {
+            strengthLabel.setText("Weak");
+            strengthLabel.getStyleClass().removeAll("medium", "strong");
+            strengthLabel.getStyleClass().add("weak");
+            strengthBar.getStyleClass().removeAll("medium", "strong");
+            strengthBar.getStyleClass().add("weak");
+        } else if (strength < 0.7) {
+            strengthLabel.setText("Medium");
+            strengthLabel.getStyleClass().removeAll("weak", "strong");
+            strengthLabel.getStyleClass().add("medium");
+            strengthBar.getStyleClass().removeAll("weak", "strong");
+            strengthBar.getStyleClass().add("medium");
+        } else {
+            strengthLabel.setText("Strong");
+            strengthLabel.getStyleClass().removeAll("weak", "medium");
+            strengthLabel.getStyleClass().add("strong");
+            strengthBar.getStyleClass().removeAll("weak", "medium");
+            strengthBar.getStyleClass().add("strong");
+        }
+    }
+
+    private double calculatePasswordStrength(String password) {
+        // Simple password strength calculation
+        // In a real app, you would use a more sophisticated algorithm
+        double strength = 0.0;
+
+        if (password.length() >= 8) strength += 0.2;
+        if (password.length() >= 12) strength += 0.2;
+        if (password.matches(".*[A-Z].*")) strength += 0.2;
+        if (password.matches(".*[a-z].*")) strength += 0.1;
+        if (password.matches(".*[0-9].*")) strength += 0.2;
+        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) strength += 0.2;
+
+        return Math.min(strength, 1.0);
+    }
+
+    @FXML
+    private void togglePasswordVisibility() {
+        // This would require a custom component or a different approach in JavaFX
+        // For simplicity, we'll just show an alert here
+        boolean showPassword = showPasswordCheckBox.isSelected();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Password Visibility");
+        alert.setHeaderText(null);
+        alert.setContentText(showPassword ?
+                "Password is now visible (in a real app)" :
+                "Password is now hidden (in a real app)");
+        alert.showAndWait();
+
+        // In a real implementation, you would toggle between a TextField and PasswordField
+        // or use a custom component that supports showing/hiding passwords
+    }
+
+    @FXML
+    private void handleCreateAccount() {
+        // Validate form one more time
+        if (fullNameField.getText().trim().isEmpty() ||
+                !isValidEmail(emailField.getText().trim()) ||
+                !isValidPassword(passwordField.getText()) ||
+                !passwordField.getText().equals(confirmPasswordField.getText()) ||
+                !termsCheckBox.isSelected()) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Form Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill out all fields correctly.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Show success message
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Account Created");
+        alert.setHeaderText(null);
+        alert.setContentText("Your account has been created successfully!");
+        alert.showAndWait();
+
+        // Navigate to login page or dashboard
+        navigateToLogin();
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            // Load the welcome view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/welcome-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) backButton.getScene().getWindow();
+
+            // Create scene and set it on the stage
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading welcome view: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void navigateToLogin() {
+        try {
+            // Load the create account view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/login-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) createAccountButton.getScene().getWindow();
+
+            // Create scene and set it on the stage
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading create account view: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void openTerms() {
+        // In a real app, you would open the terms and conditions page
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Terms and Conditions");
+        alert.setHeaderText(null);
+        alert.setContentText("Opening Terms and Conditions (in a real app)");
+        alert.showAndWait();
+    }
+}
