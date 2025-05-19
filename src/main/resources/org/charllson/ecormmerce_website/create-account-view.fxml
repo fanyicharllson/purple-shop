@@ -79,6 +79,9 @@
                                     <PasswordField fx:id="passwordField" promptText="Create a password"
                                                    styleClass="text-field" HBox.hgrow="ALWAYS"
                                                    onKeyReleased="#updatePasswordStrength"/>
+                                    <TextField fx:id="visiblePasswordField" promptText="Create a password"
+                                               styleClass="text-field" HBox.hgrow="ALWAYS"
+                                               visible="false" managed="false"/>
                                     <CheckBox fx:id="showPasswordCheckBox" text="Show"
                                               onAction="#togglePasswordVisibility" styleClass="show-password"/>
                                 </HBox>
@@ -97,8 +100,15 @@
                             <!-- Confirm Password Field -->
                             <VBox spacing="5">
                                 <Label text="Confirm Password" styleClass="field-label"/>
-                                <PasswordField fx:id="confirmPasswordField" promptText="Confirm your password"
-                                               styleClass="text-field"/>
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm your password"
+                                                   styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="visibleConfirmPasswordField" promptText="Confirm your password"
+                                               styleClass="text-field" HBox.hgrow="ALWAYS"
+                                               visible="false" managed="false"/>
+                                    <CheckBox fx:id="showConfirmPasswordCheckBox" text="Show"
+                                              onAction="#toggleConfirmPasswordVisibility" styleClass="show-password"/>
+                                </HBox>
                             </VBox>
 
                             <!-- Terms and Conditions -->

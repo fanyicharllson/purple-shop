@@ -67,6 +67,9 @@
                                 <HBox spacing="10" alignment="CENTER_LEFT">
                                     <PasswordField fx:id="passwordField" promptText="Enter your password"
                                                    styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="visiblePasswordField" promptText="Create a password"
+                                               styleClass="text-field" HBox.hgrow="ALWAYS"
+                                               visible="false" managed="false"/>
                                     <CheckBox fx:id="showPasswordCheckBox" text="Show"
                                               onAction="#togglePasswordVisibility" styleClass="show-password"/>
                                 </HBox>

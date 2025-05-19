@@ -20,6 +20,9 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
+    private TextField visiblePasswordField;
+
+    @FXML
     private TextField emailField;
 
     @FXML
@@ -79,20 +82,18 @@ public class LoginController implements Initializable {
 
     @FXML
     private void togglePasswordVisibility() {
-        // This would require a custom component or a different approach in JavaFX
-        // For simplicity, we'll just show an alert here
-        boolean showPassword = showPasswordCheckBox.isSelected();
+        boolean show = showPasswordCheckBox.isSelected();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Password Visibility");
-        alert.setHeaderText(null);
-        alert.setContentText(showPassword ?
-                "Password is now visible (in a real app)" :
-                "Password is now hidden (in a real app)");
-        alert.showAndWait();
+        visiblePasswordField.setVisible(show);
+        visiblePasswordField.setManaged(show);
+        passwordField.setVisible(!show);
+        passwordField.setManaged(!show);
 
-        // In a real implementation, you would toggle between a TextField and PasswordField
-        // or use a custom component that supports showing/hiding passwords
+        if (show) {
+            visiblePasswordField.setText(passwordField.getText());
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+        }
     }
 
     @FXML

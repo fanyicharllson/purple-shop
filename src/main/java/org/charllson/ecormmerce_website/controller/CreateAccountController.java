@@ -25,6 +25,12 @@ public class CreateAccountController implements Initializable {
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     @FXML
+    private TextField visibleConfirmPasswordField;
+
+    @FXML
+    private CheckBox showConfirmPasswordCheckBox;
+
+    @FXML
     private TextField fullNameField;
 
     @FXML
@@ -60,6 +66,7 @@ public class CreateAccountController implements Initializable {
 
         // Disable the create account button initially
         createAccountButton.setDisable(true);
+
     }
 
     private void applyEntranceAnimations() {
@@ -151,21 +158,37 @@ public class CreateAccountController implements Initializable {
 
     @FXML
     private void togglePasswordVisibility() {
-        // This would require a custom component or a different approach in JavaFX
-        // For simplicity, we'll just show an alert here
-        boolean showPassword = showPasswordCheckBox.isSelected();
+        boolean show = showPasswordCheckBox.isSelected();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Password Visibility");
-        alert.setHeaderText(null);
-        alert.setContentText(showPassword ?
-                "Password is now visible (in a real app)" :
-                "Password is now hidden (in a real app)");
-        alert.showAndWait();
+        visiblePasswordField.setVisible(show);
+        visiblePasswordField.setManaged(show);
+        passwordField.setVisible(!show);
+        passwordField.setManaged(!show);
 
-        // In a real implementation, you would toggle between a TextField and PasswordField
-        // or use a custom component that supports showing/hiding passwords
+        if (show) {
+            visiblePasswordField.setText(passwordField.getText());
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+        }
     }
+
+
+    @FXML
+    private void toggleConfirmPasswordVisibility() {
+        boolean show = showConfirmPasswordCheckBox.isSelected();
+
+        visibleConfirmPasswordField.setVisible(show);
+        visibleConfirmPasswordField.setManaged(show);
+        confirmPasswordField.setVisible(!show);
+        confirmPasswordField.setManaged(!show);
+
+        if (show) {
+            visibleConfirmPasswordField.setText(confirmPasswordField.getText());
+        } else {
+            confirmPasswordField.setText(visibleConfirmPasswordField.getText());
+        }
+    }
+
 
     @FXML
     private void handleCreateAccount() {
