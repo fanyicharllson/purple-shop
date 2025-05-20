@@ -25,10 +25,10 @@ import java.util.ResourceBundle;
 public class WelcomeController implements Initializable {
 
     @FXML
-    public ImageView welcomeImageLogo;
+    private ImageView welcomeImageLogo;
 
     @FXML
-    public ImageView logoImage;
+    private ImageView logoImage;
     @FXML
     private Button createAccountButton;
 

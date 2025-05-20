@@ -11,9 +11,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.charllson.ecormmerce_website.utils.DBUtil;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -109,18 +114,28 @@ public class LoginController implements Initializable {
             alert.showAndWait();
             return;
         }
+        try (Connection conn = DBUtil.getConnection()) {
+            String sql = "SELECT password FROM users WHERE email = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, emailField.getText().trim());
 
-        // In a real app, you would authenticate the user here
-        // For this example, we'll just show a success message
+            ResultSet rs = stmt.executeQuery();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Login Successful");
-        alert.setHeaderText(null);
-        alert.setContentText("You have successfully logged in!");
-        alert.showAndWait();
-
-        // Navigate to dashboard or home page
-        // This would be implemented in a real application
+            if (rs.next()) {
+                String hashedPassword = rs.getString("password");
+                if (BCrypt.checkpw(passwordField.getText().trim(), hashedPassword)) {
+                    showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Successfully Authenticated!");
+                    redirectToProductPage();
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
+                }
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Login Failed", "No user found with this email.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error logging in: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -161,6 +176,29 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             System.err.println("Error loading welcome view: " + e.getMessage());
         }
+    }
+
+    private void redirectToProductPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/product-catalog-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Could not load product page.");
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @FXML

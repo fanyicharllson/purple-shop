@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.charllson.ecormmerce_website.database.UserDb;
 
 import java.io.IOException;
 import java.net.URL;
@@ -207,15 +208,27 @@ public class CreateAccountController implements Initializable {
             return;
         }
 
-        // Show success message
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Account Created");
-        alert.setHeaderText(null);
-        alert.setContentText("Your account has been created successfully!");
-        alert.showAndWait();
+        //check if user already exist
 
-        // Navigate to login page or dashboard
-        navigateToLogin();
+
+        boolean saved = UserDb.saveUser(
+                fullNameField.getText().trim(),
+                emailField.getText().trim(),
+                passwordField.getText()
+        );
+
+        if (saved) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Account created successfully!");
+            alert.showAndWait();
+            navigateToLogin();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("An error occurred while creating your account.");
+            alert.showAndWait();
+        }
     }
 
     @FXML

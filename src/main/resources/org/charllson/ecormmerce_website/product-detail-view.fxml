@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.charllson.ecormmerce_website.controller.ProductDetailController"
+            prefWidth="1000" prefHeight="700"
+            styleClass="main-container">
+
+    <!-- Top Navigation Bar -->
+    <top>
+        <VBox spacing="0">
+            <!-- Upper Nav with Profile, Search, Cart -->
+            <HBox styleClass="top-nav" alignment="CENTER_LEFT" spacing="15">
+                <padding>
+                    <Insets top="15" right="25" bottom="15" left="25"/>
+                </padding>
+
+                <!-- User Profile -->
+                <StackPane styleClass="profile-container">
+                    <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
+                    <ImageView fx:id="profileImage" fitWidth="40" fitHeight="40" preserveRatio="true"/>
+                </StackPane>
+
+                <!-- Store Name -->
+                <Label text="PurpleShop" styleClass="store-name"/>
+
+                <!-- Search Bar -->
+                <HBox styleClass="search-container" HBox.hgrow="ALWAYS" alignment="CENTER">
+                    <TextField fx:id="searchField" promptText="Search cars..." styleClass="search-field"
+                               HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="searchButton" styleClass="search-button">
+                        <graphic>
+                            <Label text="🔍" styleClass="search-icon"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <!-- Wishlist Button -->
+                <Button fx:id="wishlistButton" styleClass="icon-button">
+                    <graphic>
+                        <StackPane>
+                            <Label text="♥" styleClass="nav-icon"/>
+                            <Label fx:id="wishlistCount" text="5" styleClass="icon-badge"/>
+                        </StackPane>
+                    </graphic>
+                </Button>
+
+                <!-- Cart Button -->
+                <Button fx:id="cartButton" styleClass="icon-button">
+                    <graphic>
+                        <StackPane>
+                            <Label text="🛒" styleClass="nav-icon"/>
+                            <Label fx:id="cartCount" text="3" styleClass="icon-badge"/>
+                        </StackPane>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <!-- Category Navigation -->
+            <HBox styleClass="category-nav" alignment="CENTER_LEFT" spacing="20">
+                <padding>
+                    <Insets top="10" right="25" bottom="10" left="25"/>
+                </padding>
+
+                <Button text="Home" styleClass="category-button"/>
+                <Button text="Luxury" styleClass="category-button"/>
+                <Button text="Sports" styleClass="category-button"/>
+                <Button text="SUV" styleClass="category-button"/>
+                <Button text="Electric" styleClass="category-button"/>
+                <Button text="Sedan" styleClass="category-button"/>
+                <Button text="Vintage" styleClass="category-button"/>
+            </HBox>
+
+            <!-- Breadcrumb Navigation -->
+            <HBox styleClass="breadcrumb-nav" alignment="CENTER_LEFT" spacing="5">
+                <padding>
+                    <Insets top="10" right="25" bottom="10" left="25"/>
+                </padding>
+
+                <Button text="Home" styleClass="breadcrumb-button" onAction="#backToCatalog"/>
+                <Label text=">" styleClass="breadcrumb-separator"/>
+                <Button fx:id="breadcrumbCategory2" text="Category" styleClass="breadcrumb-button"/>
+                <Label text=">" styleClass="breadcrumb-separator"/>
+                <Label fx:id="breadcrumbCurrent" text="Product Name" styleClass="breadcrumb-current"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="content-scroll">
+            <VBox spacing="30" styleClass="product-container">
+                <padding>
+                    <Insets top="20" right="25" bottom="40" left="25"/>
+                </padding>
+
+                <!-- Product Main Section -->
+                <HBox spacing="30" styleClass="product-main">
+                    <!-- Product Images Section -->
+                    <VBox spacing="15" styleClass="product-images" minWidth="450">
+                        <!-- Main Product Image -->
+                        <StackPane styleClass="main-image-container">
+                            <ImageView fx:id="mainProductImage" fitWidth="450" fitHeight="300"
+                                       styleClass="main-product-image"/>
+
+                            <!-- Favorite Button Overlay -->
+                            <Button fx:id="favoriteButton" styleClass="favorite-button" onAction="#toggleFavorite"
+                                    StackPane.alignment="TOP_RIGHT">
+                                <graphic>
+                                    <Label fx:id="favoriteIcon" text="♡" styleClass="favorite-icon"/>
+                                </graphic>
+                            </Button>
+                        </StackPane>
+
+                        <!-- Thumbnail Images -->
+                        <HBox spacing="10" styleClass="thumbnails-container">
+                            <Button styleClass="thumbnail-button" onAction="#selectImage">
+                                <graphic>
+                                    <ImageView fx:id="productImage1" fitWidth="80" fitHeight="60"
+                                               styleClass="thumbnail-image"/>
+                                </graphic>
+                            </Button>
+                            <Button styleClass="thumbnail-button" onAction="#selectImage">
+                                <graphic>
+                                    <ImageView fx:id="productImage2" fitWidth="80" fitHeight="60"
+                                               styleClass="thumbnail-image"/>
+                                </graphic>
+                            </Button>
+                            <Button styleClass="thumbnail-button" onAction="#selectImage">
+                                <graphic>
+                                    <ImageView fx:id="productImage3" fitWidth="80" fitHeight="60"
+                                               styleClass="thumbnail-image"/>
+                                </graphic>
+                            </Button>
+                            <Button styleClass="thumbnail-button" onAction="#selectImage">
+                                <graphic>
+                                    <ImageView fx:id="productImage4" fitWidth="80" fitHeight="60"
+                                               styleClass="thumbnail-image"/>
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Product Details Section -->
+                    <VBox spacing="20" styleClass="product-details" HBox.hgrow="ALWAYS">
+                        <!-- Product Title and Rating -->
+                        <VBox spacing="5">
+                            <Label fx:id="productTitle" text="Car Name" styleClass="product-title"/>
+
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <HBox fx:id="ratingStars" styleClass="rating-stars">
+                                    <!-- Rating stars will be added dynamically -->
+                                </HBox>
+                                <Label fx:id="ratingText" text="0.0 (0 reviews)" styleClass="rating-text"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Product Price -->
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label fx:id="productPrice" text="\$0" styleClass="product-price"/>
+                            <Label fx:id="productOriginalPrice" text="\$0" styleClass="product-original-price"/>
+                            <Label fx:id="discountBadge" text="0% OFF" styleClass="discount-badge"/>
+                        </HBox>
+
+                        <!-- Product Description -->
+                        <VBox spacing="10">
+                            <Label text="Description" styleClass="section-title"/>
+                            <TextFlow styleClass="product-description">
+                                <Text fx:id="descriptionText" text="Product description goes here."
+                                      styleClass="description-text"/>
+                            </TextFlow>
+                        </VBox>
+
+                        <!-- Product Variants -->
+                        <VBox spacing="10">
+                            <Label text="Exterior Color" styleClass="variant-title"/>
+                            <HBox spacing="10" styleClass="color-options">
+                                <Button styleClass="color-option, color-black" onAction="#selectColor"/>
+                                <Button styleClass="color-option, color-white" onAction="#selectColor"/>
+                                <Button styleClass="color-option, color-purple" onAction="#selectColor"/>
+                                <Button styleClass="color-option, color-blue" onAction="#selectColor"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Quantity Selector -->
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <Label text="Quantity" styleClass="quantity-label"/>
+                            <HBox styleClass="quantity-selector">
+                                <Button text="-" styleClass="quantity-button" onAction="#decreaseQuantity"/>
+                                <Label fx:id="quantityLabel" text="1" styleClass="quantity-value"/>
+                                <Button text="+" styleClass="quantity-button" onAction="#increaseQuantity"/>
+                            </HBox>
+                            <Label fx:id="stockInfo" text="0 vehicles available" styleClass="stock-info"/>
+                        </HBox>
+
+                        <!-- Action Buttons -->
+                        <HBox spacing="15" styleClass="action-buttons">
+                            <Button fx:id="addToCartButton" text="Add to Cart" styleClass="add-cart-button"
+                                    onAction="#addToCart" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button fx:id="buyNowButton" text="Buy Now" styleClass="buy-now-button" onAction="#buyNow"
+                                    HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        </HBox>
+
+                        <!-- Delivery Info -->
+                        <VBox spacing="10" styleClass="delivery-info">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="🚚" styleClass="delivery-icon"/>
+                                <VBox spacing="2">
+                                    <Label text="Premium Delivery" styleClass="delivery-title"/>
+                                    <Label text="White glove delivery service within 14 days" styleClass="delivery-text"/>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="↩️" styleClass="return-icon"/>
+                                <VBox spacing="2">
+                                    <Label text="Satisfaction Guarantee" styleClass="return-title"/>
+                                    <Label text="30-day satisfaction guarantee" styleClass="return-text"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Product Details Tabs -->
+                <TabPane styleClass="details-tabs">
+                    <Tab text="Specifications" closable="false">
+                        <VBox spacing="15" styleClass="tab-content">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <GridPane hgap="20" vgap="10" styleClass="specs-grid">
+                                <Label text="Brand" styleClass="spec-label" GridPane.rowIndex="0"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specBrand" text="Brand" styleClass="spec-value" GridPane.rowIndex="0"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="Model" styleClass="spec-label" GridPane.rowIndex="1"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specModel" text="Model" styleClass="spec-value" GridPane.rowIndex="1"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="Engine" styleClass="spec-label" GridPane.rowIndex="2"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specEngine" text="Engine" styleClass="spec-value" GridPane.rowIndex="2"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="Horsepower" styleClass="spec-label" GridPane.rowIndex="3"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specHorsepower" text="Horsepower" styleClass="spec-value" GridPane.rowIndex="3"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="Transmission" styleClass="spec-label" GridPane.rowIndex="4"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specTransmission" text="Transmission" styleClass="spec-value" GridPane.rowIndex="4"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="0-60 mph" styleClass="spec-label" GridPane.rowIndex="5"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specAcceleration" text="0-60 mph" styleClass="spec-value" GridPane.rowIndex="5"
+                                       GridPane.columnIndex="1"/>
+
+                                <Label text="Warranty" styleClass="spec-label" GridPane.rowIndex="6"
+                                       GridPane.columnIndex="0"/>
+                                <Label fx:id="specWarranty" text="Warranty" styleClass="spec-value" GridPane.rowIndex="6"
+                                       GridPane.columnIndex="1"/>
+                            </GridPane>
+                        </VBox>
+                    </Tab>
+                    <Tab text="Reviews" closable="false">
+                        <VBox spacing="20" styleClass="tab-content">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <!-- Review Summary -->
+                            <HBox spacing="30" styleClass="review-summary">
+                                <VBox spacing="10" alignment="CENTER" styleClass="rating-summary">
+                                    <Label text="5.0" styleClass="average-rating"/>
+                                    <HBox styleClass="rating-stars">
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                    </HBox>
+                                    <Label text="42 reviews" styleClass="review-count"/>
+                                </VBox>
+
+                                <VBox spacing="5" HBox.hgrow="ALWAYS" styleClass="rating-bars">
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label text="5" styleClass="star-label"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <StackPane HBox.hgrow="ALWAYS" styleClass="rating-bar-container">
+                                            <StackPane styleClass="rating-bar-bg" maxWidth="Infinity"/>
+                                            <StackPane styleClass="rating-bar-fill" maxWidth="0.9"
+                                                       StackPane.alignment="CENTER_LEFT"/>
+                                        </StackPane>
+                                        <Label text="90%" styleClass="rating-percentage"/>
+                                    </HBox>
+
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label text="4" styleClass="star-label"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <StackPane HBox.hgrow="ALWAYS" styleClass="rating-bar-container">
+                                            <StackPane styleClass="rating-bar-bg" maxWidth="Infinity"/>
+                                            <StackPane styleClass="rating-bar-fill" maxWidth="0.1"
+                                                       StackPane.alignment="CENTER_LEFT"/>
+                                        </StackPane>
+                                        <Label text="10%" styleClass="rating-percentage"/>
+                                    </HBox>
+
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label text="3" styleClass="star-label"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <StackPane HBox.hgrow="ALWAYS" styleClass="rating-bar-container">
+                                            <StackPane styleClass="rating-bar-bg" maxWidth="Infinity"/>
+                                            <StackPane styleClass="rating-bar-fill" maxWidth="0.0"
+                                                       StackPane.alignment="CENTER_LEFT"/>
+                                        </StackPane>
+                                        <Label text="0%" styleClass="rating-percentage"/>
+                                    </HBox>
+
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label text="2" styleClass="star-label"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <StackPane HBox.hgrow="ALWAYS" styleClass="rating-bar-container">
+                                            <StackPane styleClass="rating-bar-bg" maxWidth="Infinity"/>
+                                            <StackPane styleClass="rating-bar-fill" maxWidth="0.0"
+                                                       StackPane.alignment="CENTER_LEFT"/>
+                                        </StackPane>
+                                        <Label text="0%" styleClass="rating-percentage"/>
+                                    </HBox>
+
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label text="1" styleClass="star-label"/>
+                                        <Label text="★" styleClass="star-filled"/>
+                                        <StackPane HBox.hgrow="ALWAYS" styleClass="rating-bar-container">
+                                            <StackPane styleClass="rating-bar-bg" maxWidth="Infinity"/>
+                                            <StackPane styleClass="rating-bar-fill" maxWidth="0.0"
+                                                       StackPane.alignment="CENTER_LEFT"/>
+                                        </StackPane>
+                                        <Label text="0%" styleClass="rating-percentage"/>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+
+                            <Separator/>
+
+                            <!-- Individual Reviews -->
+                            <VBox spacing="20" styleClass="reviews-list">
+                                <!-- Review 1 -->
+                                <VBox spacing="10" styleClass="review-item">
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <ImageView fx:id="reviewerImage1" fitWidth="40" fitHeight="40" styleClass="reviewer-image"/>
+                                        <VBox spacing="2">
+                                            <Label text="James Wilson" styleClass="reviewer-name"/>
+                                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                                <HBox styleClass="rating-stars-small">
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                </HBox>
+                                                <Label text="2 weeks ago" styleClass="review-date"/>
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+                                    <Label text="The Phantom exceeds all expectations. The ride quality is unmatched - it feels like you're floating on a cloud. The craftsmanship is impeccable, with every detail meticulously designed. The V12 engine delivers power effortlessly. Worth every penny for the ultimate luxury experience."
+                                           styleClass="review-text" wrapText="true"/>
+                                </VBox>
+
+                                <!-- Review 2 -->
+                                <VBox spacing="10" styleClass="review-item">
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <ImageView fx:id="reviewerImage2" fitWidth="40" fitHeight="40" styleClass="reviewer-image"/>
+                                        <VBox spacing="2">
+                                            <Label text="Elizabeth Chen" styleClass="reviewer-name"/>
+                                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                                <HBox styleClass="rating-stars-small">
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                    <Label text="★" styleClass="star-filled"/>
+                                                </HBox>
+                                                <Label text="1 month ago" styleClass="review-date"/>
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+                                    <Label text="The Rolls-Royce Phantom is the definition of automotive perfection. The starlight headliner creates a magical ambiance, and the whisper-quiet cabin isolates you from the outside world. The bespoke options allowed me to create a truly personalized vehicle. The attention to detail is simply extraordinary."
+                                           styleClass="review-text" wrapText="true"/>
+                                </VBox>
+
+                                <!-- More Reviews Button -->
+                                <Button text="Load More Reviews" styleClass="load-more-button"/>
+                            </VBox>
+                        </VBox>
+                    </Tab>
+                </TabPane>
+
+                <!-- Related Products -->
+                <VBox spacing="15">
+                    <Label text="You May Also Like" styleClass="section-title"/>
+
+                    <!-- Related products will be added dynamically -->
+                    <FlowPane fx:id="relatedProducts" hgap="20" vgap="20" styleClass="related-products"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

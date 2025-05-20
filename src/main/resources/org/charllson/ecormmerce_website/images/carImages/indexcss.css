@@ -1,0 +1,166 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    scroll-behavior: smooth;
+}
+header {
+    background-color: #ededed;
+    box-shadow: 0 0 10px 0 #000000e0;
+    top: 0;
+    position: absolute;
+    position: sticky;
+    z-index: 10;
+    padding: 2% 6%;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-links ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+}
+.nav-links ul li span {
+    color: orangered;
+}
+.nav-links ul li a {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+    display: block;   
+}
+.nav-links ul li::after {
+    content: '';
+    height: 3px;
+    background-color: orangered;
+    display: block;
+    transition: 0.3s;
+    margin: auto;
+    width: 0%;
+    
+}
+.nav-links ul li:hover::after {
+   width: 100%;
+}
+.logo a {
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: bold;
+    color: orangered;
+}
+.middle-nav{
+    border: 1px solid #000;
+    width: 300px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+}
+.search {
+    cursor: pointer;
+    
+}
+.middle-nav input {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    width: 100%;
+    display: inline-block;
+}
+
+/* main section */
+
+.main {
+    width: 80%;
+    margin: auto;
+    padding-top: 70px;
+    text-align: center;
+}
+.sub-mains {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-column-gap: 16px;
+    grid-row-gap: 25px;
+}
+.text {
+    text-align: left;
+}.text a {
+    text-decoration: none;
+    color: orangered;
+    font-size: 16px;
+    font-weight: 700;
+}
+.text i {
+    color: orangered;
+}
+.text span {
+    color: black;
+    font-weight: 600;
+}
+.sub-mains img {
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+   
+}
+img:hover {
+    outline: 2px solid orangered;
+}
+/* .buy-btn {
+    margin-top: 8px;
+    width: 200px;
+   
+}
+button::before {
+    
+    content: '';
+    top: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ededed;
+    transform-origin: left;
+    transition: 500ms ease-in-out;
+    
+    
+    
+}
+/* button:hover::before { */
+   /* background-color: red; 
+ 
+  */
+
+
+/* footer section */
+footer {
+    background-color: rgb(20, 20, 45);
+    margin-top: 70px;
+    width: 100%;
+    height: 20vh;
+    position: relative;
+    
+}
+.sub-footer {
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    padding-top: 70px;
+    font-size: 16px;
+}
+.sub-footer a {
+    text-decoration: none;
+    color: rgba(255, 68, 0, 0.815);
+    font-size: 12px; 
+     
+}
+.sub-footer p {
+    color: white;
+    font-size: 12px;
+}
