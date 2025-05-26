@@ -49,7 +49,7 @@ public class ProductCatalogController implements Initializable {
 
         // Initialize combo boxes
         sortComboBox.getItems().addAll("Featured", "Price: Low to High", "Price: High to Low", "Newest", "Best Selling");
-        filterComboBox.getItems().addAll("All Categories", "Luxury", "Sports", "SUV", "Electric", "Sedan", "Vintage");
+        filterComboBox.getItems().addAll("All Categories", "Luxury", "Sports", "Shoes", "Underwear", "Cloth", "Vintage");
 
         // Load profile image
         profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));

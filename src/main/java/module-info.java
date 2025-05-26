@@ -3,6 +3,7 @@ module org.charllson.ecormmerce_website {
     requires javafx.fxml;
     requires java.sql;
     requires jbcrypt;
+    requires java.desktop;
 
     opens org.charllson.ecormmerce_website to javafx.fxml;
     opens org.charllson.ecormmerce_website.controller to javafx.fxml;

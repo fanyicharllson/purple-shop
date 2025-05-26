@@ -71,7 +71,6 @@ public class ProductService {
                 38,
                 2
         );
-        lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini1.webp");
         lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini2.jpg");
         lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini3.jpg");
         lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini4.jpg");
@@ -186,29 +185,27 @@ public class ProductService {
         });
         products.put(ferrari.getId(), ferrari);
 
-        // Product 6: Aston Martin DB11
-        Product astonMartin = new Product(
+        // Product 6: Toyota Camry
+        Product toyotaCamry = new Product(
                 6,
-                "Lamborghini Aventador",
-                "The Lamborghini Aventador combines breathtaking design with exhilarating performance. The distinctive aerodynamic elements include the innovative AeroBlade™ that enhances stability without disrupting the car's clean lines. Inside, the handcrafted interior features Bridge of Weir leather and customizable trim options. The powerful V8 or V12 engine options deliver the performance expected from this iconic British brand.",
-                205000,
-                219000,
-                "Lamborghini Aventador",
-                "LA25",
-                "Sports",
-                4.8,
-                27,
-                4
+                "Toyota Camry",
+                "The Toyota Camry blends refined comfort with proven reliability. Its aerodynamic styling improves fuel efficiency while maintaining a bold presence on the road. Inside, the spacious interior features premium materials and intuitive technology. Powered by an efficient 2.5L engine or optional hybrid, the Camry delivers smooth performance with exceptional value.",
+                27000,
+                31000,
+                "Toyota Camry",
+                "TC25",
+                "Sedan",
+                4.5,
+                34,
+                5
         );
-        astonMartin.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini1.webp");
-        astonMartin.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini2.jpg");
-        astonMartin.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini3.jpg");
-        astonMartin.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini4.jpg");
-        astonMartin.addColor("Green");
-        astonMartin.addColor("Silver");
-        astonMartin.addColor("Black");
-        astonMartin.addColor("Blue");
-        astonMartin.setSpecifications(new String[]{
+        toyotaCamry.addImagePath("/org/charllson/ecormmerce_website/images/carImages/toyota.jpg");
+        toyotaCamry.addImagePath("/org/charllson/ecormmerce_website/images/carImages/toyota.png");
+        toyotaCamry.addColor("Green");
+        toyotaCamry.addColor("Silver");
+        toyotaCamry.addColor("Black");
+        toyotaCamry.addColor("Blue");
+        toyotaCamry.setSpecifications(new String[]{
                 "4.0L V8 Twin-Turbo",
                 "503 hp",
                 "8-speed Automatic",
@@ -217,7 +214,7 @@ public class ProductService {
                 "18 mpg combined",
                 "3 Years / Unlimited Miles"
         });
-        products.put(astonMartin.getId(), astonMartin);
+        products.put(toyotaCamry.getId(), toyotaCamry);
     }
 
     public Product getProductById(int id) {

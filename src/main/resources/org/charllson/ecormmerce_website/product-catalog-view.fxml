@@ -79,9 +79,9 @@
                 <Button text="Home" styleClass="category-button"/>
                 <Button text="Luxury" styleClass="category-button"/>
                 <Button text="Sports" styleClass="category-button"/>
-                <Button text="SUV" styleClass="category-button"/>
-                <Button text="Electric" styleClass="category-button"/>
-                <Button text="Sedan" styleClass="category-button"/>
+                <Button text="Shoes" styleClass="category-button"/>
+                <Button text="UnderWears" styleClass="category-button"/>
+                <Button text="Cloths" styleClass="category-button"/>
                 <Button text="Vintage" styleClass="category-button"/>
             </HBox>
 

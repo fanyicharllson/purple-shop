@@ -126,8 +126,8 @@ public class Product {
 
     // Get main image (first in the list)
     public String getMainImagePath() {
-        if (imagePaths != null && !imagePaths.isEmpty()) {
-            return imagePaths.get(0);
+        if (!imagePaths.isEmpty()) {
+            return imagePaths.getFirst();
         }
         return null;
     }

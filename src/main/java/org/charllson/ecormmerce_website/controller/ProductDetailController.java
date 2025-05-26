@@ -1,6 +1,7 @@
 package org.charllson.ecormmerce_website.controller;
 
 import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
 import org.charllson.ecormmerce_website.model.Product;
 import org.charllson.ecormmerce_website.service.ProductService;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -132,7 +134,7 @@ public class ProductDetailController implements Initializable {
 
     private boolean isFavorite = false;
     private int quantity = 1;
-    private int cartItemCount = 3; // Initial value from FXML
+    private int cartItemCount = 0; // Initial value from FXML
     private int wishlistItemCount = 5; // Initial value from FXML
 
     private ProductService productService;
@@ -450,10 +452,20 @@ public class ProductDetailController implements Initializable {
     }
 
     @FXML
-    private void selectImage() {
-        // In a real app, this would change the main product image
-        // For this example, we'll just log the action
-        System.out.println("Thumbnail selected");
+    private void selectImage(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+
+        // Get the ImageView inside the button
+        ImageView thumbnailView = (ImageView) clickedButton.getGraphic();
+
+        // Get the image from the thumbnail
+        Image selectedImage = thumbnailView.getImage();
+
+        // Set the main product image to the selected thumbnail image
+        if (selectedImage != null) {
+            mainProductImage.setImage(selectedImage);
+        }
+
     }
 
     @FXML
