@@ -451,18 +451,27 @@
     -fx-border-color: rgba(255, 255, 255, 0.2);
 }
 
-.category-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-padding: 5px 10px;
+.category-active {
+    -fx-background-color: rgba(255, 255, 255, 0.3) !important;
+    -fx-background-radius: 5px !important;
+    -fx-text-fill: white !important;
+    -fx-font-weight: bold !important;
 }
 
 .category-button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.2);
     -fx-background-radius: 5px;
 }
+
+.category-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+    -fx-transition: all 0.3s ease;
+}
+
 
 /* Breadcrumb Navigation */
 .breadcrumb-nav {

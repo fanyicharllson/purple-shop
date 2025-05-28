@@ -40,7 +40,7 @@
 
                 <!-- Search Bar -->
                 <HBox styleClass="search-container" HBox.hgrow="ALWAYS" alignment="CENTER">
-                    <TextField fx:id="searchField" promptText="Search cars..." styleClass="search-field"
+                    <TextField fx:id="searchField" promptText="Search products..." styleClass="search-field"
                                HBox.hgrow="ALWAYS"/>
                     <Button fx:id="searchButton" styleClass="search-button">
                         <graphic>
@@ -71,18 +71,25 @@
             </HBox>
 
             <!-- Category Navigation -->
-            <HBox styleClass="category-nav" alignment="CENTER_LEFT" spacing="20">
+            <HBox fx:id="categoryNav" styleClass="category-nav" alignment="CENTER_LEFT" spacing="20">
                 <padding>
                     <Insets top="10" right="25" bottom="10" left="25"/>
                 </padding>
 
-                <Button text="Home" styleClass="category-button"/>
-                <Button text="Luxury" styleClass="category-button"/>
-                <Button text="Sports" styleClass="category-button"/>
-                <Button text="Shoes" styleClass="category-button"/>
-                <Button text="UnderWears" styleClass="category-button"/>
-                <Button text="Cloths" styleClass="category-button"/>
-                <Button text="Vintage" styleClass="category-button"/>
+                <Button fx:id="homeButton" text="Home" styleClass="category-button, category-active"
+                        onAction="#handleCategoryClick" userData="Home"/>
+                <Button fx:id="carsButton" text="Cars" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Cars"/>
+                <Button fx:id="sportsButton" text="Sports" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Sports"/>
+                <Button fx:id="shoesButton" text="Shoes" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Shoes"/>
+                <Button fx:id="underwearsButton" text="Underwears" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Underwears"/>
+                <Button fx:id="clothsButton" text="Cloths" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Cloths"/>
+                <Button fx:id="vintageButton" text="Vintage" styleClass="category-button"
+                        onAction="#handleCategoryClick" userData="Vintage"/>
             </HBox>
 
             <!-- Breadcrumb Navigation -->
@@ -93,7 +100,7 @@
 
                 <Button text="Home" styleClass="breadcrumb-button"/>
                 <Label text=">" styleClass="breadcrumb-separator"/>
-                <Label text="All Cars" styleClass="breadcrumb-current"/>
+                <Label fx:id="breadcrumbCurrent" text="All Products" styleClass="breadcrumb-current"/>
             </HBox>
         </VBox>
     </top>
@@ -109,8 +116,8 @@
                 <!-- Page Title and Filters -->
                 <HBox spacing="20" alignment="CENTER_LEFT" styleClass="catalog-header">
                     <VBox spacing="5" HBox.hgrow="ALWAYS">
-                        <Label text="Luxury Cars" styleClass="page-title"/>
-                        <Label text="Discover our collection of premium vehicles" styleClass="page-subtitle"/>
+                        <Label fx:id="pageTitle" text="All Products" styleClass="page-title"/>
+                        <Label fx:id="pageSubtitle" text="Discover our collection of premium products" styleClass="page-subtitle"/>
                     </VBox>
 
                     <HBox spacing="10" alignment="CENTER_RIGHT">
