@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -76,6 +77,8 @@ public class ProductCatalogController implements Initializable {
     private ProductService productService;
     private List<Product> products;
     private String currentCategory = "Home";
+
+    ManageAuth manageAuth = new ManageAuth();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -367,5 +370,10 @@ public class ProductCatalogController implements Initializable {
         // Implementation for wishlist navigation
         // This can be added later when you implement wishlist page
         System.out.println("Wishlist navigation - to be implemented");
+    }
+
+    public void openUserProfile(MouseEvent mouseEvent) {
+        System.out.println("Moving to open user profile");
+        manageAuth.openUserProfile(mouseEvent);
     }
 }

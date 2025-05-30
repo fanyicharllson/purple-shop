@@ -11,7 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.charllson.ecormmerce_website.database.UserDb;
 import org.charllson.ecormmerce_website.utils.DBUtil;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private VBox formContainer;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -114,27 +117,26 @@ public class LoginController implements Initializable {
             alert.showAndWait();
             return;
         }
-        try (Connection conn = DBUtil.getConnection()) {
-            String sql = "SELECT password FROM users WHERE email = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, emailField.getText().trim());
+        // Attempt to authenticate user
+        int userId = UserDb.authenticateUser(emailField.getText().trim(), passwordField.getText().trim());
 
-            ResultSet rs = stmt.executeQuery();
+        if (userId != -1) {
+            String userName = UserDb.getUserNameById(userId);
+            String userEmail = emailField.getText().trim();
 
-            if (rs.next()) {
-                String hashedPassword = rs.getString("password");
-                if (BCrypt.checkpw(passwordField.getText().trim(), hashedPassword)) {
-                    showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Successfully Authenticated!");
-                    redirectToProductPage();
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
-                }
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Login Failed", "No user found with this email.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Error logging in: " + e.getMessage());
+            // set the user in the session
+            SessionManager.getInstance().setUserSession(userId, userEmail, userName);
+
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Login successful! Welcome back " + userName  + ".");
+
+            // Clear form fields
+            clearLoginFields();
+
+            redirectToProductPage();
+
+
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid email or password.");
         }
     }
 
@@ -152,7 +154,7 @@ public class LoginController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Social Login");
         alert.setHeaderText(null);
-        alert.setContentText("Social login functionality would be implemented here.");
+        alert.setContentText("Social login temporarily unavailable. Please use your credentials!");
         alert.showAndWait();
     }
 
@@ -220,5 +222,10 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             System.err.println("Error loading create account view: " + e.getMessage());
         }
+    }
+
+    private void clearLoginFields() {
+        emailField.clear();
+        passwordField.clear();
     }
 }

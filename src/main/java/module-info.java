@@ -11,4 +11,5 @@ module org.charllson.ecormmerce_website {
     exports org.charllson.ecormmerce_website;
     exports org.charllson.ecormmerce_website.model;
     opens org.charllson.ecormmerce_website.model to javafx.fxml;
+    opens org.charllson.ecormmerce_website.ui to javafx.fxml;
 }

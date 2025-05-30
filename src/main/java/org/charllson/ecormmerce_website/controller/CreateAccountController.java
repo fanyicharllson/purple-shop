@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.charllson.ecormmerce_website.database.UserDb;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -208,26 +209,30 @@ public class CreateAccountController implements Initializable {
             return;
         }
 
-        //check if user already exist
 
+        // Attempt to save user and get the generated ID
+        int userId = UserDb.saveUser(fullNameField.getText().trim(), emailField.getText().trim(), passwordField.getText().trim());
 
-        boolean saved = UserDb.saveUser(
-                fullNameField.getText().trim(),
-                emailField.getText().trim(),
-                passwordField.getText()
-        );
+        if (userId != -1) {
+            // Store session data globally
+            SessionManager.getInstance().setUserSession(
+                    userId,
+                    emailField.getText().trim(),
+                    fullNameField.getText().trim()
+            );
+            showAlert(Alert.AlertType.INFORMATION, "Success",
+                    "Account created successfully! Welcome, " + fullNameField.getText().trim() + "!");
 
-        if (saved) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setContentText("Account created successfully!");
-            alert.showAndWait();
+            // Clear form fields
+            clearSignUpFields();
+
             navigateToLogin();
+
+            // showUserProfile();
+
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText("An error occurred while creating your account.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "Failed to create account. Email might already be in use.");
         }
     }
 
@@ -281,5 +286,19 @@ public class CreateAccountController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("Opening Terms and Conditions (in a real app)");
         alert.showAndWait();
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void clearSignUpFields() {
+        fullNameField.clear();
+        emailField.clear();
+        passwordField.clear();
     }
 }

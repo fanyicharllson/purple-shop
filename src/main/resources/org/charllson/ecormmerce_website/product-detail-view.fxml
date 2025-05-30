@@ -58,7 +58,7 @@
                     <graphic>
                         <StackPane>
                             <Label text="♥" styleClass="nav-icon"/>
-                            <Label fx:id="wishlistCount" text="5" styleClass="icon-badge"/>
+                            <Label fx:id="wishlistCount" text="0" styleClass="icon-badge"/>
                         </StackPane>
                     </graphic>
                 </Button>
@@ -68,7 +68,7 @@
                     <graphic>
                         <StackPane>
                             <Label text="🛒" styleClass="nav-icon"/>
-                            <Label fx:id="cartCount" text="3" styleClass="icon-badge"/>
+                            <Label fx:id="cartCount" text="0" styleClass="icon-badge"/>
                         </StackPane>
                     </graphic>
                 </Button>
@@ -80,13 +80,11 @@
                     <Insets top="10" right="25" bottom="10" left="25"/>
                 </padding>
 
-                <Button text="Home" styleClass="category-button"/>
-                <Button text="Luxury" styleClass="category-button"/>
-                <Button text="Sports" styleClass="category-button"/>
-                <Button text="Shoes" styleClass="category-button"/>
-                <Button text="Underwear" styleClass="category-button"/>
-                <Button text="Cloths" styleClass="category-button"/>
-                <Button text="Vintage" styleClass="category-button"/>
+                <Button fx:id="backButton" styleClass="back-button" onAction="#handleBack">
+                    <graphic>
+                        <Label text="←" styleClass="back-arrow"/>
+                    </graphic>
+                </Button>
             </HBox>
 
             <!-- Breadcrumb Navigation -->

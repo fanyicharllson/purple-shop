@@ -1,6 +1,7 @@
 package org.charllson.ecormmerce_website.service;
 
 import org.charllson.ecormmerce_website.model.Product;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ProductService {
         rollsRoyce.addImagePath("/org/charllson/ecormmerce_website/images/carImages/rolls royce3.jpg");
         rollsRoyce.addImagePath("/org/charllson/ecormmerce_website/images/carImages/rolls royce4.jpg");
         rollsRoyce.addImagePath("/org/charllson/ecormmerce_website/images/carImages/rolls royce5.jpg");
-        rollsRoyce.setSpecifications(new String[] {
+        rollsRoyce.setSpecifications(new String[]{
                 "6.75L V12 Twin-Turbo", "563 hp", "8-speed Automatic", "5.1 seconds", "155 mph", "14 mpg combined", "4 Years / Unlimited Miles"
         });
         products.put(rollsRoyce.getId(), rollsRoyce);
@@ -80,12 +81,59 @@ public class ProductService {
                 38,
                 2
         );
-        lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini.jpg");
+        lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini3.jpg");
         lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini2.jpg");
-        lamborghini.setSpecifications(new String[] {
+        lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/lamborghini4.jpg");
+        lamborghini.addImagePath("/org/charllson/ecormmerce_website/images/carImages/luxury1.jpg");
+        lamborghini.setSpecifications(new String[]{
                 "6.5L V12", "730 hp", "7-speed ISR Automated Manual", "2.9 seconds", "217 mph", "11 mpg combined", "3 Years / 36,000 Miles"
         });
         products.put(lamborghini.getId(), lamborghini);
+        // Product 3: Ferrari
+        Product ferrari = new Product(
+                3,
+                "Ferrari SF90 Stradale",
+                "The Ferrari SF90 Stradale is a revolutionary hybrid supercar that represents the pinnacle of Ferrari's engineering excellence. With a combined output of 986 horsepower from its V8 engine and three electric motors, it delivers extraordinary performance.",
+                625000,
+                625000,
+                "Ferrari",
+                "SF90 Stradale",
+                "Cars",
+                4.9,
+                35,
+                2
+        );
+        ferrari.addImagePath("/org/charllson/ecormmerce_website/images/carImages/ferrarri4.jpg");
+        ferrari.addImagePath("/org/charllson/ecormmerce_website/images/carImages/ferrari2.jpg");
+        ferrari.addImagePath("/org/charllson/ecormmerce_website/images/carImages/ferrari3.jpg");
+        ferrari.setSpecifications(new String[]{
+                "4.0L V8 Hybrid", "986 hp", "8-speed DCT", "2.5 seconds", "211 mph", "18 mpg combined", "3 Years / Unlimited Miles"
+        });
+        products.put(ferrari.getId(), ferrari);
+
+        // Product 4: Mercedes
+        Product mercedes = new Product(
+                4,
+                "Mercedes-AMG GT Black Series",
+                "The Mercedes-AMG GT Black Series represents the pinnacle of Mercedes-AMG engineering. This track-focused supercar features the most powerful AMG V8 production engine ever made, advanced aerodynamics, and race-inspired technology.",
+                325000,
+                325000,
+                "Mercedes-AMG",
+                "GT Black Series",
+                "Cars",
+                4.9,
+                32,
+                3
+        );
+        mercedes.addImagePath("/org/charllson/ecormmerce_website/images/carImages/mecedes.jpg");
+        mercedes.addImagePath("/org/charllson/ecormmerce_website/images/carImages/mecedes2.jpg");
+        mercedes.addImagePath("/org/charllson/ecormmerce_website/images/carImages/mecedes3.jpg");
+        mercedes.addImagePath("/org/charllson/ecormmerce_website/images/carImages/mecedes4.jpg");
+        mercedes.addImagePath("/org/charllson/ecormmerce_website/images/carImages/mecedes5.jpg");
+        mercedes.setSpecifications(new String[] {
+                "4.0L V8 Biturbo", "720 hp", "7-speed DCT", "3.1 seconds", "202 mph", "15 mpg combined", "4 Years / 50,000 Miles"
+        });
+        products.put(mercedes.getId(), mercedes);
     }
 
     private void addSportsProducts() {
@@ -104,7 +152,7 @@ public class ProductService {
                 25
         );
         basketball.addImagePath("/org/charllson/ecormmerce_website/images/sportsImages/basketball.png");
-        basketball.setSpecifications(new String[] {
+        basketball.setSpecifications(new String[]{
                 "Official Size 7", "Premium Leather", "Indoor/Outdoor", "29.5 inch circumference", "22 oz weight", "FIBA Approved", "1 Year Warranty"
         });
         products.put(basketball.getId(), basketball);
@@ -124,7 +172,7 @@ public class ProductService {
                 15
         );
         tennisRacket.addImagePath("/org/charllson/ecormmerce_website/images/sportsImages/tennis_racket.png");
-        tennisRacket.setSpecifications(new String[] {
+        tennisRacket.setSpecifications(new String[]{
                 "Carbon Fiber Frame", "100 sq in head size", "11.2 oz weight", "27 inch length", "16x19 string pattern", "4 1/4 grip size", "2 Year Warranty"
         });
         products.put(tennisRacket.getId(), tennisRacket);
@@ -146,7 +194,7 @@ public class ProductService {
                 50
         );
         runningShoes.addImagePath("/org/charllson/ecormmerce_website/images/shoesImages/running_shoes.png");
-        runningShoes.setSpecifications(new String[] {
+        runningShoes.setSpecifications(new String[]{
                 "Boost Midsole", "Primeknit Upper", "Continental Rubber", "Sizes 6-13", "Multiple Colors", "Machine Washable", "1 Year Warranty"
         });
         products.put(runningShoes.getId(), runningShoes);
@@ -166,7 +214,7 @@ public class ProductService {
                 30
         );
         dressShoes.addImagePath("/org/charllson/ecormmerce_website/images/shoesImages/dress_shoes.png");
-        dressShoes.setSpecifications(new String[] {
+        dressShoes.setSpecifications(new String[]{
                 "Genuine Leather", "Goodyear Welt", "Leather Sole", "Sizes 7-12", "Black/Brown", "Handcrafted", "2 Year Warranty"
         });
         products.put(dressShoes.getId(), dressShoes);
@@ -188,7 +236,7 @@ public class ProductService {
                 100
         );
         cottonBoxers.addImagePath("/org/charllson/ecormmerce_website/images/underwearsImages/cotton_boxers.png");
-        cottonBoxers.setSpecifications(new String[] {
+        cottonBoxers.setSpecifications(new String[]{
                 "100% Organic Cotton", "Elastic Waistband", "Machine Washable", "Sizes S-XXL", "Multiple Colors", "Tagless Design", "6 Month Warranty"
         });
         products.put(cottonBoxers.getId(), cottonBoxers);
@@ -208,7 +256,7 @@ public class ProductService {
                 75
         );
         sportsBriefs.addImagePath("/org/charllson/ecormmerce_website/images/underwearsImages/sports_briefs.png");
-        sportsBriefs.setSpecifications(new String[] {
+        sportsBriefs.setSpecifications(new String[]{
                 "Moisture-Wicking Fabric", "Anti-Odor Technology", "Seamless Construction", "Sizes S-XL", "Quick Dry", "Stretch Fit", "1 Year Warranty"
         });
         products.put(sportsBriefs.getId(), sportsBriefs);
@@ -230,7 +278,7 @@ public class ProductService {
                 200
         );
         casualTShirt.addImagePath("/org/charllson/ecormmerce_website/images/clothsImages/casual_tshirt.png");
-        casualTShirt.setSpecifications(new String[] {
+        casualTShirt.setSpecifications(new String[]{
                 "100% Cotton", "Modern Fit", "Pre-Shrunk", "Sizes XS-XXL", "Multiple Colors", "Machine Washable", "6 Month Warranty"
         });
         products.put(casualTShirt.getId(), casualTShirt);
@@ -250,7 +298,7 @@ public class ProductService {
                 80
         );
         formalShirt.addImagePath("/org/charllson/ecormmerce_website/images/clothsImages/formal_shirt.png");
-        formalShirt.setSpecifications(new String[] {
+        formalShirt.setSpecifications(new String[]{
                 "Cotton Blend", "Wrinkle Resistant", "Classic Collar", "Sizes 14-18", "White/Blue/Gray", "Easy Care", "1 Year Warranty"
         });
         products.put(formalShirt.getId(), formalShirt);
@@ -272,7 +320,7 @@ public class ProductService {
                 12
         );
         vintageWatch.addImagePath("/org/charllson/ecormmerce_website/images/vintageImages/vintage_watch.png");
-        vintageWatch.setSpecifications(new String[] {
+        vintageWatch.setSpecifications(new String[]{
                 "Mechanical Movement", "Leather Strap", "Water Resistant", "Sapphire Crystal", "42mm Case", "Vintage Design", "3 Year Warranty"
         });
         products.put(vintageWatch.getId(), vintageWatch);
@@ -292,7 +340,7 @@ public class ProductService {
                 8
         );
         vintageCamera.addImagePath("/org/charllson/ecormmerce_website/images/vintageImages/vintage_camera.png");
-        vintageCamera.setSpecifications(new String[] {
+        vintageCamera.setSpecifications(new String[]{
                 "35mm Film", "Manual Focus", "Built-in Light Meter", "Metal Body", "Leather Grip", "Multiple Lenses", "2 Year Warranty"
         });
         products.put(vintageCamera.getId(), vintageCamera);

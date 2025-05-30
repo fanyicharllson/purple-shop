@@ -91,6 +91,9 @@ public class ProductDetailController implements Initializable {
     private  Button breadcrumbCategory2;
 
     @FXML
+    private Button backButton;
+
+    @FXML
     private Label quantityLabel;
 
     @FXML
@@ -467,6 +470,27 @@ public class ProductDetailController implements Initializable {
         }
 
     }
+    @FXML
+    private void handleBack() {
+        try {
+            // Load the welcome view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/product-catalog-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) backButton.getScene().getWindow();
+
+            // Create scene and set it on the stage
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading welcome view: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void selectColor() {
@@ -522,3 +546,4 @@ public class ProductDetailController implements Initializable {
         mainProductImage.getParent().requestFocus();
     }
 }
+

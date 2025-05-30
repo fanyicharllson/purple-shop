@@ -30,7 +30,7 @@
                 </padding>
 
                 <!-- User Profile -->
-                <StackPane styleClass="profile-container">
+                <StackPane styleClass="profile-container" onMouseClicked="#openUserProfile">
                     <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
                     <ImageView fx:id="profileImage" fitWidth="40" fitHeight="40" preserveRatio="true"/>
                 </StackPane>
@@ -54,7 +54,7 @@
                     <graphic>
                         <StackPane>
                             <Label text="♥" styleClass="nav-icon"/>
-                            <Label fx:id="wishlistCount" text="5" styleClass="icon-badge"/>
+                            <Label fx:id="wishlistCount" text="0" styleClass="icon-badge"/>
                         </StackPane>
                     </graphic>
                 </Button>
@@ -64,7 +64,7 @@
                     <graphic>
                         <StackPane>
                             <Label text="🛒" styleClass="nav-icon"/>
-                            <Label fx:id="cartCount" text="3" styleClass="icon-badge"/>
+                            <Label fx:id="cartCount" text="0" styleClass="icon-badge"/>
                         </StackPane>
                     </graphic>
                 </Button>
