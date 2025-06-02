@@ -17,15 +17,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.charllson.ecormmerce_website.database.UserDb;
 import org.charllson.ecormmerce_website.model.Product;
+import org.charllson.ecormmerce_website.model.User;
 import org.charllson.ecormmerce_website.service.ProductService;
 import org.charllson.ecormmerce_website.utils.CartIconUpdater;
 import org.charllson.ecormmerce_website.utils.CartManager;
 import org.charllson.ecormmerce_website.utils.SessionManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -36,6 +40,7 @@ import java.util.ResourceBundle;
 public class ProductDetailController implements Initializable {
 
     ManageAuth manageAuth = new ManageAuth();
+    User user = UserDb.getUserById(SessionManager.getInstance().getCurrentUserId());
     @FXML
     private Label productTitle;
     @FXML
@@ -118,7 +123,7 @@ public class ProductDetailController implements Initializable {
         // Get product service instance
         productService = ProductService.getInstance();
 
-       //Ensure cart count sync across page ui
+        //Ensure cart count sync across page ui
         cartCount.textProperty().bind(CartManager.getInstance().cartItemCountProperty().asString());
 
 
@@ -128,8 +133,24 @@ public class ProductDetailController implements Initializable {
         // Initialize product state
         updateQuantityLabel();
 
-        // Load profile image
-        profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+
+        String imagePath = user.getProfileImagePath();
+
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                profileImage.setImage(new Image("file:" + imagePath));
+            } else {
+                // fallback to default
+                profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+            }
+        } else {
+            profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+        }
+
+        Circle clip = new Circle(profileImage.getFitWidth() / 2, profileImage.getFitHeight() / 2, profileImage.getFitWidth() / 2);
+        profileImage.setClip(clip);
+
         reviewerImage1.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/carImages/rolls royce5.jpg"));
         reviewerImage2.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/carImages/rolls royce6.jpg"));
     }

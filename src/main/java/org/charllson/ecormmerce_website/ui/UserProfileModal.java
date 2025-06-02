@@ -1,27 +1,32 @@
 package org.charllson.ecormmerce_website.ui;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import org.charllson.ecormmerce_website.database.UserDb;
 import org.charllson.ecormmerce_website.model.User;
 
+import java.io.File;
 import java.util.Objects;
 
 public class UserProfileModal {
     private Stage modalStage;
     private int currentUserId;
+    private SimpleStringProperty nameProperty;
+    private SimpleStringProperty emailProperty;
+    private String originalName;
+    private String originalEmail;
+    private String originalImagePath;
+    private SimpleStringProperty selectedImagePath = new SimpleStringProperty();
+
 
     public UserProfileModal(int userId) {
         this.currentUserId = userId;
@@ -34,15 +39,21 @@ public class UserProfileModal {
         modalStage.initStyle(StageStyle.UNDECORATED);
         modalStage.setTitle("User Profile");
 
-        // Fetch user data
         User user = UserDb.getUserById(currentUserId);
-
         if (user == null) {
             showErrorModal();
             return;
         }
 
-        // Create main container
+        originalName = user.getFullName();
+        originalEmail = user.getEmail();
+        originalImagePath = user.getProfileImagePath();
+        selectedImagePath.set(originalImagePath);
+
+
+        nameProperty = new SimpleStringProperty(originalName);
+        emailProperty = new SimpleStringProperty(originalEmail);
+
         VBox mainContainer = new VBox(20);
         mainContainer.setAlignment(Pos.CENTER);
         mainContainer.setPadding(new Insets(30));
@@ -52,80 +63,94 @@ public class UserProfileModal {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);"
         );
 
-        // Profile picture container
-        VBox profilePicContainer = new VBox(10);
-        profilePicContainer.setAlignment(Pos.CENTER);
-
-        // Profile circle with image
-        Circle profileCircle = new Circle(50);
-        profileCircle.setFill(Color.WHITE);
-        profileCircle.setStroke(Color.web("#7C3AED"));
-        profileCircle.setStrokeWidth(3);
-
-        ImageView profileImageView = new ImageView();
-        profileImageView.setFitWidth(90);
-        profileImageView.setFitHeight(90);
-        profileImageView.setPreserveRatio(true);
-
-        // Load profile image or use default
-        try {
-            if (user.getProfileImagePath() != null && !user.getProfileImagePath().isEmpty()) {
-                Image profileImage = new Image("file:" + user.getProfileImagePath());
-                profileImageView.setImage(profileImage);
-            } else {
-                // Default profile icon
-                Image defaultImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("org/charllson/ecormmerce_website/images/placeHolder.png")));
-                profileImageView.setImage(defaultImage);
-            }
-        } catch (Exception e) {
-            // Fallback to a simple colored circle if image loading fails
-            profileCircle.setFill(Color.web("#DDD6FE"));
-        }
-
-        // Clip the image to circle
-        Circle clip = new Circle(45);
-        profileImageView.setClip(clip);
-
-        profilePicContainer.getChildren().addAll(profileCircle, profileImageView);
-
-        // User information container
-        VBox userInfoContainer = new VBox(15);
-        userInfoContainer.setAlignment(Pos.CENTER);
-
-        // User name
-        Label nameLabel = new Label(user.getFullName());
-        nameLabel.setStyle(
-                "-fx-font-size: 24px;" +
+        Label titleLabel = new Label("Your Profile");
+        titleLabel.setStyle(
+                "-fx-font-size: 28px;" +
                         "-fx-font-weight: bold;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-family: 'Segoe UI', Arial, sans-serif;"
         );
 
-        // User email
-        Label emailLabel = new Label(user.getEmail());
-        emailLabel.setStyle(
-                "-fx-font-size: 16px;" +
-                        "-fx-text-fill: #E5E7EB;" +
-                        "-fx-font-family: 'Segoe UI', Arial, sans-serif;"
+        VBox profilePicContainer = new VBox(10);
+        profilePicContainer.setAlignment(Pos.CENTER);
+
+        ImageView profileImageView = new ImageView();
+        profileImageView.setFitWidth(90);
+        profileImageView.setFitHeight(90);
+        profileImageView.setPreserveRatio(false);
+
+        try {
+            if (originalImagePath != null && !originalImagePath.isEmpty()) {
+                Image profileImage = new Image("file:" + originalImagePath);
+                profileImageView.setImage(profileImage);
+            } else {
+                Image defaultImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/org/charllson/ecormmerce_website/images/placeHolder.png")));
+                profileImageView.setImage(defaultImage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Circular clip
+        Circle clip = new Circle(45);
+        clip.centerXProperty().bind(profileImageView.fitWidthProperty().divide(2));
+        clip.centerYProperty().bind(profileImageView.fitHeightProperty().divide(2));
+        profileImageView.setClip(clip);
+
+        // Optional: purple border behind the clipped image
+        Circle borderCircle = new Circle(45);
+        borderCircle.setFill(Color.TRANSPARENT);
+        borderCircle.setStroke(Color.web("#7C3AED"));
+        borderCircle.setStrokeWidth(3);
+
+        StackPane imageStack = new StackPane(borderCircle, profileImageView);
+        imageStack.setPrefSize(90, 90);
+        imageStack.setMaxSize(90, 90);
+
+        Button uploadButton = new Button("Upload Image");
+        uploadButton.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-text-fill: #7C3AED;" +
+                        "-fx-font-size: 12px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 5 15;" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-cursor: hand;"
         );
+        uploadButton.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose Profile Image");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+            );
+            File selectedFile = fileChooser.showOpenDialog(modalStage);
+            if (selectedFile != null) {
+                selectedImagePath.set(selectedFile.getAbsolutePath());
+                Image newImage = new Image("file:" + selectedImagePath.get());
+                profileImageView.setImage(newImage);
+            }
+        });
 
-        // Member since (optional)
-        Label memberSinceLabel = new Label("Member since " + user.getCreatedAt());
-        memberSinceLabel.setStyle(
-                "-fx-font-size: 12px;" +
-                        "-fx-text-fill: #D1D5DB;" +
-                        "-fx-font-family: 'Segoe UI', Arial, sans-serif;"
-        );
+        profilePicContainer.getChildren().addAll(imageStack, uploadButton);
 
-        userInfoContainer.getChildren().addAll(nameLabel, emailLabel, memberSinceLabel);
+        VBox userInfoContainer = new VBox(15);
+        userInfoContainer.setAlignment(Pos.CENTER);
 
-        // Buttons container
+        TextField nameField = new TextField(originalName);
+        nameField.setPromptText("Full Name");
+        nameField.setStyle("-fx-background-radius: 10; -fx-padding: 5 10;");
+
+        TextField emailField = new TextField(originalEmail);
+        emailField.setPromptText("Email");
+        emailField.setStyle("-fx-background-radius: 10; -fx-padding: 5 10;");
+
+        userInfoContainer.getChildren().addAll(nameField, emailField);
+
         HBox buttonContainer = new HBox(15);
         buttonContainer.setAlignment(Pos.CENTER);
 
-        // Edit Profile button
-        Button editButton = new Button("Edit Profile");
-        editButton.setStyle(
+        Button updateButton = new Button("Update");
+        updateButton.setStyle(
                 "-fx-background-color: white;" +
                         "-fx-text-fill: #7C3AED;" +
                         "-fx-font-size: 14px;" +
@@ -134,26 +159,7 @@ public class UserProfileModal {
                         "-fx-background-radius: 25;" +
                         "-fx-cursor: hand;"
         );
-        editButton.setOnMouseEntered(e -> editButton.setStyle(
-                "-fx-background-color: #F3F4F6;" +
-                        "-fx-text-fill: #7C3AED;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-padding: 10 20;" +
-                        "-fx-background-radius: 25;" +
-                        "-fx-cursor: hand;"
-        ));
-        editButton.setOnMouseExited(e -> editButton.setStyle(
-                "-fx-background-color: white;" +
-                        "-fx-text-fill: #7C3AED;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-padding: 10 20;" +
-                        "-fx-background-radius: 25;" +
-                        "-fx-cursor: hand;"
-        ));
 
-        // Close button
         Button closeButton = new Button("Close");
         closeButton.setStyle(
                 "-fx-background-color: transparent;" +
@@ -166,43 +172,59 @@ public class UserProfileModal {
                         "-fx-border-radius: 25;" +
                         "-fx-cursor: hand;"
         );
-        closeButton.setOnMouseEntered(e -> closeButton.setStyle(
-                "-fx-background-color: rgba(255,255,255,0.1);" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-padding: 10 20;" +
-                        "-fx-background-radius: 25;" +
-                        "-fx-border-color: white;" +
-                        "-fx-border-width: 2;" +
-                        "-fx-border-radius: 25;" +
-                        "-fx-cursor: hand;"
-        ));
-        closeButton.setOnMouseExited(e -> closeButton.setStyle(
-                "-fx-background-color: transparent;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-padding: 10 20;" +
-                        "-fx-background-radius: 25;" +
-                        "-fx-border-color: white;" +
-                        "-fx-border-width: 2;" +
-                        "-fx-border-radius: 25;" +
-                        "-fx-cursor: hand;"
-        ));
-
         closeButton.setOnAction(e -> modalStage.close());
-        editButton.setOnAction(e -> {
-            // Handle edit profile action
-            System.out.println("Edit profile clicked for user: " + user.getFullName());
-            // You can open another modal or scene for editing
+
+        Button ordersButton = new Button("View Orders");
+        ordersButton.setStyle(
+                "-fx-background-color: #6B21A8;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 10 20;" +
+                        "-fx-background-radius: 25;" +
+                        "-fx-cursor: hand;"
+        );
+        ordersButton.setOnAction(e -> {
+            System.out.println("View Orders clicked for user: " + user.getFullName());
         });
 
-        buttonContainer.getChildren().addAll(editButton, closeButton);
+        updateButton.disableProperty().bind(
+                Bindings.createBooleanBinding(() ->
+                                nameField.getText().equals(originalName) &&
+                                        emailField.getText().equals(originalEmail) &&
+                                        Objects.equals(selectedImagePath.get(), originalImagePath),
+                        nameField.textProperty(),
+                        emailField.textProperty(),
+                        selectedImagePath
+                )
+        );
 
-        // Add all components to main container
-        mainContainer.getChildren().addAll(profilePicContainer, userInfoContainer, buttonContainer);
 
-        // Create scene
-        Scene scene = new Scene(mainContainer, 350, 450);
+        updateButton.setOnAction(e -> {
+            String newName = nameField.getText();
+            String newEmail = emailField.getText();
+            String newImagePath = selectedImagePath.get();
+
+
+            user.setFullName(newName);
+            user.setEmail(newEmail);
+            user.setProfileImagePath(newImagePath);
+            UserDb.updateUser(user);
+
+            originalName = newName;
+            originalEmail = newEmail;
+            originalImagePath = newImagePath;
+
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Hello " + newName  + " ,your profile has been updated successfully!");
+
+            modalStage.close();
+        });
+
+        buttonContainer.getChildren().addAll(updateButton, ordersButton, closeButton);
+
+        mainContainer.getChildren().addAll(titleLabel, profilePicContainer, userInfoContainer, buttonContainer);
+
+        Scene scene = new Scene(mainContainer, 400, 550);
         scene.setFill(Color.TRANSPARENT);
         modalStage.setScene(scene);
     }
@@ -240,5 +262,13 @@ public class UserProfileModal {
 
     public void show() {
         modalStage.showAndWait();
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

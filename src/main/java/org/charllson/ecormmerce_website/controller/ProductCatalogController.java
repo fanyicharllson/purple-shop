@@ -17,13 +17,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.charllson.ecormmerce_website.database.UserDb;
 import org.charllson.ecormmerce_website.model.Product;
+import org.charllson.ecormmerce_website.model.User;
 import org.charllson.ecormmerce_website.service.ProductService;
 import org.charllson.ecormmerce_website.utils.CartIconUpdater;
 import org.charllson.ecormmerce_website.utils.CartManager;
 import org.charllson.ecormmerce_website.utils.SessionManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -33,60 +37,44 @@ import java.util.ResourceBundle;
 
 public class ProductCatalogController implements Initializable {
 
+    ManageAuth manageAuth = new ManageAuth();
+    User user = UserDb.getUserById(SessionManager.getInstance().getCurrentUserId());
     @FXML
     private ComboBox<String> sortComboBox;
-
     @FXML
     private ComboBox<String> filterComboBox;
-
     @FXML
     private FlowPane productGrid;
-
     @FXML
     private ImageView profileImage;
-
     @FXML
     private HBox categoryNav;
-
     @FXML
     private Label cartCount;
-
     @FXML
     private Label pageTitle;
-
     @FXML
     private Label pageSubtitle;
-
     @FXML
     private Label breadcrumbCurrent;
-
     // Category buttons
     @FXML
     private Button homeButton;
-
     @FXML
     private Button carsButton;
-
     @FXML
     private Button sportsButton;
-
     @FXML
     private Button shoesButton;
-
     @FXML
     private Button underwearsButton;
-
     @FXML
     private Button clothsButton;
-
     @FXML
     private Button vintageButton;
-
     private ProductService productService;
     private List<Product> products;
     private String currentCategory = "Home";
-
-    ManageAuth manageAuth = new ManageAuth();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,8 +86,22 @@ public class ProductCatalogController implements Initializable {
         sortComboBox.getItems().addAll("Featured", "Price: Low to High", "Price: High to Low", "Newest", "Best Selling");
         filterComboBox.getItems().addAll("All Categories", "Cars", "Sports", "Shoes", "Underwears", "Cloths", "Vintage");
 
-        // Load profile image
-        profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+        String imagePath = user.getProfileImagePath();
+
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                profileImage.setImage(new Image("file:" + imagePath));
+            } else {
+                // fallback to default
+                profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+            }
+        } else {
+            profileImage.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/placeHolder.png"));
+        }
+
+        Circle clip = new Circle(profileImage.getFitWidth() / 2, profileImage.getFitHeight() / 2, profileImage.getFitWidth() / 2);
+        profileImage.setClip(clip);
 
         // Set initial page content
         updatePageContent("Home");
@@ -385,6 +387,7 @@ public class ProductCatalogController implements Initializable {
         stage.setHeight(400);
         stage.show();
     }
+
     private void showInfoMessage(String message) {
         // Use Alert for simplicity:
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -393,6 +396,7 @@ public class ProductCatalogController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     // Method to handle navigation to wishlist
     @FXML
     private void openWishlist() {

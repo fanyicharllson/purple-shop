@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.charllson.ecormmerce_website.ui.AboutContactModal;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +44,13 @@ public class WelcomeController implements Initializable {
 
     @FXML
     private HBox navBar;
+    @FXML
+    private Button aboutButton;
+
+    @FXML
+    private Button contactButton;
+
+    AboutContactModal aboutContactModal = new AboutContactModal();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,6 +59,9 @@ public class WelcomeController implements Initializable {
 
         // Add hover effects for buttons
         setupButtonAnimations();
+
+        aboutButton.setOnAction(e -> aboutContactModal.showAboutModal());
+        contactButton.setOnAction(e -> aboutContactModal.showContactModal());
 
         try {
             // Load logo image

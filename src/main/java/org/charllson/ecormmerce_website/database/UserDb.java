@@ -185,6 +185,24 @@ public class UserDb {
         return null;
     }
 
+    public static void updateUser(User user) {
+        String query = "UPDATE users SET full_name = ?, email = ?, profile_image_path = ? WHERE id = ?";
+
+        try (Connection conn = DBUtil.getConnection(); // Replace with your actual connection method
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, user.getFullName());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getProfileImagePath());
+            pstmt.setInt(4, user.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
 

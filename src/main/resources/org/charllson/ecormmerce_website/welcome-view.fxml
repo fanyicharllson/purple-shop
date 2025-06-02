@@ -35,10 +35,8 @@
                 </HBox>
 
                 <HBox alignment="CENTER_RIGHT" spacing="15" HBox.hgrow="ALWAYS">
-                    <Button text="Home" styleClass="nav-button"/>
-                    <Button text="Products" styleClass="nav-button"/>
-                    <Button text="About" styleClass="nav-button"/>
-                    <Button text="Contact" styleClass="nav-button"/>
+                    <Button fx:id="aboutButton" text="About PurpleShop" styleClass="nav-button"/>
+                    <Button fx:id="contactButton" text="Contact Us" styleClass="nav-button"/>
                 </HBox>
             </HBox>
         </top>
