@@ -1,4 +1,5 @@
 package org.charllson.ecormmerce_website.controller;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,7 +8,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.charllson.ecormmerce_website.model.Product;
+import org.charllson.ecormmerce_website.utils.CartIconUpdater;
+import org.charllson.ecormmerce_website.utils.CartManager;
 
 import java.io.InputStream;
 
@@ -98,8 +102,20 @@ public class ProductCardController {
 
     @FXML
     private void addToCart() {
-        // This would add the product to the cart in a real application
+        CartManager.getInstance().addToCart(product);
         System.out.println("Added " + product.getName() + " to cart");
+
+
+        // Notify UI to update cart icon count
+        CartIconUpdater.updateCartCount();
+
+        // Animate the cart count
+//        ScaleTransition pulse = new ScaleTransition(Duration.millis(200), cartCount);
+//        pulse.setToX(1.5);
+//        pulse.setToY(1.5);
+//        pulse.setCycleCount(2);
+//        pulse.setAutoReverse(true);
+//        pulse.play();
     }
 
     @FXML

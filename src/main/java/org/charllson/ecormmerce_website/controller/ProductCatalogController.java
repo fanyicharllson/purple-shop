@@ -4,8 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,6 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.charllson.ecormmerce_website.model.Product;
 import org.charllson.ecormmerce_website.service.ProductService;
+import org.charllson.ecormmerce_website.utils.CartIconUpdater;
+import org.charllson.ecormmerce_website.utils.CartManager;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +47,9 @@ public class ProductCatalogController implements Initializable {
 
     @FXML
     private HBox categoryNav;
+
+    @FXML
+    private Label cartCount;
 
     @FXML
     private Label pageTitle;
@@ -98,6 +106,8 @@ public class ProductCatalogController implements Initializable {
 
         // Populate product grid with all products initially
         populateProductGrid();
+
+        CartIconUpdater.setCartCountLabel(cartCount);
     }
 
     @FXML
@@ -277,6 +287,7 @@ public class ProductCatalogController implements Initializable {
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
 
             stage.setScene(scene);
+            stage.setHeight(700);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -356,14 +367,32 @@ public class ProductCatalogController implements Initializable {
         System.out.println("Search functionality - to be implemented");
     }
 
-    // Method to handle navigation to cart
-    @FXML
-    private void openCart() {
-        // Implementation for cart navigation
-        // This can be added later when you implement cart page
-        System.out.println("Cart navigation - to be implemented");
-    }
 
+    @FXML
+    private void goToCartPage(ActionEvent event) throws IOException {
+        CartManager cartManager = CartManager.getInstance();
+        String username = SessionManager.getInstance().getCurrentUserName();
+        if (cartManager.getTotalItemCount() == 0) {
+            showInfoMessage("Hey " + username + " ,Your cart is empty!");
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/cart-page.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.setHeight(400);
+        stage.show();
+    }
+    private void showInfoMessage(String message) {
+        // Use Alert for simplicity:
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     // Method to handle navigation to wishlist
     @FXML
     private void openWishlist() {

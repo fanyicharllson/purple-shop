@@ -60,7 +60,7 @@
                 </Button>
 
                 <!-- Cart Button -->
-                <Button fx:id="cartButton" styleClass="icon-button">
+                <Button fx:id="cartButton" styleClass="icon-button" onAction="#goToCartPage">
                     <graphic>
                         <StackPane>
                             <Label text="🛒" styleClass="nav-icon"/>

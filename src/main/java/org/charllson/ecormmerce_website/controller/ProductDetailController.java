@@ -5,12 +5,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,8 +22,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.charllson.ecormmerce_website.model.Product;
 import org.charllson.ecormmerce_website.service.ProductService;
+import org.charllson.ecormmerce_website.utils.CartIconUpdater;
+import org.charllson.ecormmerce_website.utils.CartManager;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -30,116 +35,80 @@ import java.util.ResourceBundle;
 
 public class ProductDetailController implements Initializable {
 
+    ManageAuth manageAuth = new ManageAuth();
     @FXML
     private Label productTitle;
-
     @FXML
     private Text descriptionText;
-
     @FXML
     private Label productPrice;
-
     @FXML
     private Label productOriginalPrice;
-
     @FXML
     private Label discountBadge;
-
     @FXML
     private HBox ratingStars;
-
     @FXML
     private Label ratingText;
-
     @FXML
     private Label stockInfo;
-
     @FXML
     private ImageView mainProductImage;
-
     @FXML
     private ImageView productImage1;
-
     @FXML
     private ImageView productImage2;
-
     @FXML
     private ImageView productImage3;
-
     @FXML
     private ImageView productImage4;
-
     @FXML
     private FlowPane relatedProducts;
-
     @FXML
     private ImageView profileImage;
-
     @FXML
     private ImageView reviewerImage1;
-
     @FXML
     private ImageView reviewerImage2;
-
     @FXML
     private Label favoriteIcon;
-
     @FXML
     private Button favoriteButton;
-
     @FXML
-    private  Button breadcrumbCategory2;
-
+    private Button breadcrumbCategory2;
     @FXML
     private Button backButton;
-
     @FXML
     private Label quantityLabel;
-
     @FXML
     private Button addToCartButton;
-
     @FXML
     private Button buyNowButton;
-
     @FXML
     private Label cartCount;
-
     @FXML
     private Label wishlistCount;
-
     @FXML
     private Label breadcrumbCategory;
-
     @FXML
     private Label breadcrumbCurrent;
-
     @FXML
     private Label specBrand;
-
     @FXML
     private Label specModel;
-
     @FXML
     private Label specEngine;
-
     @FXML
     private Label specHorsepower;
-
     @FXML
     private Label specTransmission;
-
     @FXML
     private Label specAcceleration;
-
     @FXML
     private Label specWarranty;
-
     private boolean isFavorite = false;
     private int quantity = 1;
-    private int cartItemCount = 0; // Initial value from FXML
     private int wishlistItemCount = 5; // Initial value from FXML
-
     private ProductService productService;
     private Product currentProduct;
     private int productId;
@@ -148,6 +117,10 @@ public class ProductDetailController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get product service instance
         productService = ProductService.getInstance();
+
+       //Ensure cart count sync across page ui
+        cartCount.textProperty().bind(CartManager.getInstance().cartItemCountProperty().asString());
+
 
         // Set up button animations
         setupButtonAnimations();
@@ -428,10 +401,15 @@ public class ProductDetailController implements Initializable {
 
     @FXML
     private void addToCart() {
-        // Add the current quantity to cart
-        cartItemCount += quantity;
-        cartCount.setText(String.valueOf(cartItemCount));
+        if (currentProduct == null) {
+            System.err.println("Current Product not set in ProductDetailController");
+            return;
+        }
 
+        CartManager.getInstance().addToCart(currentProduct);
+        System.out.println("Added " + currentProduct.getName() + " to cart");
+
+        CartIconUpdater.updateCartCount();
         // Animate the cart count
         ScaleTransition pulse = new ScaleTransition(Duration.millis(200), cartCount);
         pulse.setToX(1.5);
@@ -439,10 +417,6 @@ public class ProductDetailController implements Initializable {
         pulse.setCycleCount(2);
         pulse.setAutoReverse(true);
         pulse.play();
-
-        // Reset quantity to 1
-        quantity = 1;
-        updateQuantityLabel();
     }
 
     @FXML
@@ -470,6 +444,7 @@ public class ProductDetailController implements Initializable {
         }
 
     }
+
     @FXML
     private void handleBack() {
         try {
@@ -516,6 +491,33 @@ public class ProductDetailController implements Initializable {
     }
 
     @FXML
+    private void goToCartPage(ActionEvent event) throws IOException {
+        CartManager cartManager = CartManager.getInstance();
+        String username = SessionManager.getInstance().getCurrentUserName();
+        if (cartManager.getTotalItemCount() == 0) {
+            showInfoMessage("Hey " + username + " ,Your cart is empty!");
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/cart-page.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.setHeight(400);
+        stage.show();
+    }
+
+    private void showInfoMessage(String message) {
+        // Use Alert for simplicity:
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
     private void backToCatalog() {
         try {
             // Load the product catalog view
@@ -544,6 +546,11 @@ public class ProductDetailController implements Initializable {
 
         // Scroll to top
         mainProductImage.getParent().requestFocus();
+    }
+
+    public void openUserProfile(MouseEvent mouseEvent) {
+        System.out.println("Moving to open user profile");
+        manageAuth.openUserProfile(mouseEvent);
     }
 }
 

@@ -34,7 +34,7 @@
                 </padding>
 
                 <!-- User Profile -->
-                <StackPane styleClass="profile-container">
+                <StackPane styleClass="profile-container" onMouseClicked="#openUserProfile">
                     <Circle fx:id="profileCircle" radius="20" styleClass="profile-circle"/>
                     <ImageView fx:id="profileImage" fitWidth="40" fitHeight="40" preserveRatio="true"/>
                 </StackPane>
@@ -64,7 +64,7 @@
                 </Button>
 
                 <!-- Cart Button -->
-                <Button fx:id="cartButton" styleClass="icon-button">
+                <Button fx:id="cartButton" styleClass="icon-button" onAction="#goToCartPage">
                     <graphic>
                         <StackPane>
                             <Label text="🛒" styleClass="nav-icon"/>
@@ -213,7 +213,7 @@
                         <HBox spacing="15" styleClass="action-buttons">
                             <Button fx:id="addToCartButton" text="Add to Cart" styleClass="add-cart-button"
                                     onAction="#addToCart" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                            <Button fx:id="buyNowButton" text="Buy Now" styleClass="buy-now-button" onAction="#buyNow"
+                            <Button fx:id="buyNowButton" text="Checkout" styleClass="buy-now-button" onAction="#buyNow"
                                     HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
                         </HBox>
 

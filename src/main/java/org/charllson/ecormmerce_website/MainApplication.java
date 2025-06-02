@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class MainApplication extends Application {
 
     @Override
@@ -15,7 +17,7 @@ public class MainApplication extends Application {
         Parent root = loader.load();
 
         // Load CSS
-        String css = getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm();
 
         // Create the scene
         Scene scene = new Scene(root);

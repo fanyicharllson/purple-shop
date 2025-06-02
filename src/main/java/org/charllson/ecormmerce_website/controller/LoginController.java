@@ -188,6 +188,7 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
             stage.setScene(scene);
+            stage.setHeight(700);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
