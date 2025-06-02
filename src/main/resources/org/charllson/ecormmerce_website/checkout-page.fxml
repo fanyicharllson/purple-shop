@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.charllson.ecormmerce_website.controller.CheckoutController"
+            prefWidth="1000" prefHeight="800">
+
+    <!-- Top Header Bar -->
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color: #f5f3fa; -fx-padding: 20;">
+            <Button fx:id="backButton" text="← Back"
+                    style="-fx-background-color: transparent; -fx-font-size: 16; -fx-cursor: hand; -fx-text-fill: #6a0dad;" />
+            <Label text="Checkout"
+                   style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #6a0dad;" />
+        </HBox>
+    </top>
+
+    <!-- Center Scrollable Content -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="20" alignment="TOP_CENTER"
+                      style="-fx-background-color: #f5f3fa; -fx-padding: 30;">
+
+                    <!-- Debug Label -->
+                    <Label text="Your Cart Summary"
+                           style="-fx-font-size: 26px; -fx-text-fill: purple;" />
+
+                    <!-- Cart Items -->
+                    <VBox fx:id="checkoutItemsContainer" spacing="15" maxWidth="600" />
+
+                    <!-- Total Price -->
+                    <Label fx:id="totalPriceLabel"
+                           style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #6a0dad;" />
+
+                    <!-- Billing Info -->
+                    <VBox spacing="10" maxWidth="600"
+                          style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 10;">
+                        <Label text="Billing Information"
+                               style="-fx-font-size: 18px; -fx-text-fill: #333;" />
+                        <TextField fx:id="nameField" promptText="Full Name" />
+                        <TextField fx:id="emailField" promptText="Email Address" />
+                        <TextField fx:id="addressField" promptText="Shipping Address" />
+                    </VBox>
+
+                    <!-- Payment Info -->
+                    <VBox spacing="10" maxWidth="600"
+                          style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 10;">
+                        <Label text="Payment Method"
+                               style="-fx-font-size: 18px; -fx-text-fill: #333;" />
+                        <ChoiceBox fx:id="paymentMethodBox">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Credit Card" />
+                                    <String fx:value="Mobile Money" />
+                                    <String fx:value="PayPal" />
+                                    <String fx:value="Cash on Delivery" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
+                    </VBox>
+
+                    <!-- Confirm Button -->
+                    <Button fx:id="confirmOrderButton" text="Confirm Order"
+                            style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 16; -fx-cursor: hand; -fx-padding: 10 20; -fx-background-radius: 8;" />
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

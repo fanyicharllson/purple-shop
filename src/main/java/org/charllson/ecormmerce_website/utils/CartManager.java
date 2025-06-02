@@ -13,7 +13,8 @@ public class CartManager {
 
     private final IntegerProperty cartItemCount = new SimpleIntegerProperty(0); //
 
-    private CartManager() {}
+    private CartManager() {
+    }
 
     public static CartManager getInstance() {
         if (instance == null) {
@@ -49,6 +50,13 @@ public class CartManager {
     public int getTotalItemCount() {
         return cartItems.values().stream().mapToInt(CartItem::getQuantity).sum();
     }
+
+    public double getTotalPrice() {
+        return cartItems.values().stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                .sum();
+    }
+
 
     public IntegerProperty cartItemCountProperty() {
         return cartItemCount;

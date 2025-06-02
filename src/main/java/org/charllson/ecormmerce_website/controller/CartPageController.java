@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.charllson.ecormmerce_website.model.Product;
 import org.charllson.ecormmerce_website.utils.CartItem;
 import org.charllson.ecormmerce_website.utils.CartManager;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,8 +120,32 @@ public class CartPageController {
 
     @FXML
     private void onCheckout() {
-        // Future: go to checkout page
-        System.out.println("Proceeding to checkout...");
+        CartManager cartManager = CartManager.getInstance();
+        String username = SessionManager.getInstance().getCurrentUserName();
+        if (cartManager.getTotalItemCount() == 0) {
+            showInfoMessage("Hey " + username + " ,Your cart is empty!");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/checkout-page.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) totalLabel.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load checkout page: " + e.getMessage());
+        }
+    }
+
+    private void showInfoMessage(String message) {
+        // Use Alert for simplicity:
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private Image loadProductImage(String path) {
