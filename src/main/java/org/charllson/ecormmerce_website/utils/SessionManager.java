@@ -32,7 +32,7 @@ public class SessionManager {
         this.currentUserName = null;
     }
 
-    // Check if user is logged in
+    // Check if a user is logged in
     public boolean isLoggedIn() {
         return currentUserId != -1;
     }

@@ -66,6 +66,32 @@
                         </ChoiceBox>
                     </VBox>
 
+                    <!-- Credit Card Fields -->
+                    <VBox fx:id="creditCardForm" spacing="10" maxWidth="600" visible="false" managed="false"
+                          style="-fx-padding: 10; -fx-background-color: #fdfdfd; -fx-background-radius: 10; -fx-border-color: #d0cde1; -fx-border-width: 1;">
+                        <Label text="Enter Card Details"
+                               style="-fx-font-size: 16px; -fx-text-fill: #6a0dad;" />
+                        <TextField fx:id="cardNumberField" promptText="Card Number" />
+                        <TextField fx:id="expiryDateField" promptText="Expiry Date (MM/YY)" />
+                        <TextField fx:id="cvvField" promptText="CVV" />
+                    </VBox>
+
+                    <!-- Mobile Money Fields -->
+                    <VBox fx:id="mobileMoneyForm" spacing="10" maxWidth="600" visible="false" managed="false"
+                          style="-fx-padding: 10; -fx-background-color: #fdfdfd; -fx-background-radius: 10; -fx-border-color: #d0cde1; -fx-border-width: 1;">
+                        <Label text="Mobile Money Number"
+                               style="-fx-font-size: 16px; -fx-text-fill: #6a0dad;" />
+                        <TextField fx:id="mobileMoneyNumberField" promptText="Phone Number" />
+                    </VBox>
+
+                    <!-- PayPal Fields -->
+                    <VBox fx:id="paypalForm" spacing="10" maxWidth="600" visible="false" managed="false"
+                          style="-fx-padding: 10; -fx-background-color: #fdfdfd; -fx-background-radius: 10; -fx-border-color: #d0cde1; -fx-border-width: 1;">
+                        <Label text="PayPal Email"
+                               style="-fx-font-size: 16px; -fx-text-fill: #6a0dad;" />
+                        <TextField fx:id="paypalEmailField" promptText="PayPal Email Address" />
+                    </VBox>
+
                     <!-- Confirm Button -->
                     <Button fx:id="confirmOrderButton" text="Confirm Order"
                             style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 16; -fx-cursor: hand; -fx-padding: 10 20; -fx-background-radius: 8;" />
