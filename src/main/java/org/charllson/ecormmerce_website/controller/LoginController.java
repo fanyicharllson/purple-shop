@@ -199,6 +199,10 @@ public class LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/product-catalog-view.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) loginButton.getScene().getWindow();
+
+            ProductCatalogController controller = loader.getController();
+            controller.setMainStage(stage);
+
             Scene scene = new Scene(root);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
             stage.setScene(scene);

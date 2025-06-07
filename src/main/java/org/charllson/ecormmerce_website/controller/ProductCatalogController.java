@@ -77,6 +77,7 @@ public class ProductCatalogController implements Initializable {
     private ProductService productService;
     private List<Product> products;
     private String currentCategory = "Home";
+    private Stage mainStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -112,6 +113,9 @@ public class ProductCatalogController implements Initializable {
         populateProductGrid();
 
         CartIconUpdater.setCartCountLabel(cartCount);
+    }
+    public void setMainStage(Stage stage) {
+        this.mainStage = stage;
     }
 
     @FXML
@@ -285,6 +289,7 @@ public class ProductCatalogController implements Initializable {
 
             // Get the current stage
             Stage stage = (Stage) productGrid.getScene().getWindow();
+            detailController.setMainStage(stage);
 
             // Create scene and set it on the stage
             Scene scene = new Scene(root);
@@ -445,6 +450,6 @@ public class ProductCatalogController implements Initializable {
 
     public void openUserProfile(MouseEvent mouseEvent) {
         System.out.println("Moving to open user profile");
-        manageAuth.openUserProfile(mouseEvent);
+        manageAuth.openUserProfile(mouseEvent, mainStage);
     }
 }

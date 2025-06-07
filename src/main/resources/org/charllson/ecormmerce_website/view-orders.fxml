@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.charllson.ecormmerce_website.controller.ViewOrdersController"
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-color: linear-gradient(to bottom right, #f3e8ff, #ede9fe);">
+
+    <!-- Top Header -->
+    <top>
+        <HBox spacing="20" alignment="CENTER_LEFT"
+              style="-fx-padding: 20; -fx-background-color: #6B21A8;">
+            <Button fx:id="backButton" text="← Back"
+                    onAction="#handleBack"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-cursor: hand;" />
+            <Label text="Your Orders"
+                   style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+
+    <!-- Center Table -->
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <TableView fx:id="ordersTable" prefHeight="500" style="-fx-background-radius: 12;">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="Order ID" prefWidth="70" />
+                    <TableColumn fx:id="createdAtColumn" text="Order Date" prefWidth="120" />
+                    <TableColumn text="Product Name" fx:id="productNameColumn" prefWidth="200"/>
+                    <TableColumn text="Quantity" fx:id="quantityColumn" prefWidth="100"/>
+                    <TableColumn text="Unit Price" fx:id="unitPriceColumn" prefWidth="100"/>
+                    <TableColumn fx:id="shippingAddressColumn" text="Shipping Address" prefWidth="150" />
+                    <TableColumn fx:id="paymentMethodColumn" text="Payment Method" prefWidth="120" />
+                    <TableColumn fx:id="totalPriceColumn" text="Item Total Price($)" prefWidth="100" />
+                    <TableColumn fx:id="statusColumn" text="Order Status" prefWidth="100" />
+                    <TableColumn fx:id="reasonColumn" text="Reason" prefWidth="200" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

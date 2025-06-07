@@ -2,8 +2,10 @@ package org.charllson.ecormmerce_website.ui;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -11,10 +13,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.*;
+import org.charllson.ecormmerce_website.controller.ViewOrdersController;
 import org.charllson.ecormmerce_website.database.UserDb;
 import org.charllson.ecormmerce_website.model.User;
+import org.charllson.ecormmerce_website.utils.SessionManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class UserProfileModal {
@@ -26,10 +31,12 @@ public class UserProfileModal {
     private String originalEmail;
     private String originalImagePath;
     private SimpleStringProperty selectedImagePath = new SimpleStringProperty();
+    private Stage mainStage;
 
 
-    public UserProfileModal(int userId) {
+    public UserProfileModal(int userId, Stage mainStage) {
         this.currentUserId = userId;
+        this.mainStage = mainStage;
         createModal();
     }
 
@@ -185,8 +192,38 @@ public class UserProfileModal {
                         "-fx-cursor: hand;"
         );
         ordersButton.setOnAction(e -> {
-            System.out.println("View Orders clicked for user: " + user.getFullName());
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/view-orders.fxml"));
+                Parent root = loader.load();
+
+                ViewOrdersController controller = loader.getController();
+                controller.setCurrentUserEmail(SessionManager.getInstance().getCurrentUserEmail());
+
+                // Close the modal
+                modalStage.close();
+
+                // Hide the main window
+                mainStage.hide();
+
+                // Show orders page
+                Stage ordersStage = new Stage();
+                ordersStage.setTitle("Your Orders");
+                ordersStage.setScene(new Scene(root));
+                ordersStage.setResizable(false);
+//                ordersStage.setMaximized(true);
+
+                // When View Orders page is closed, show the main window again
+                ordersStage.setOnCloseRequest(event -> {
+                    mainStage.show();
+                });
+
+                ordersStage.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
+
+
 
         updateButton.disableProperty().bind(
                 Bindings.createBooleanBinding(() ->

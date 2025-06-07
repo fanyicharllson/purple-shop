@@ -117,6 +117,7 @@ public class ProductDetailController implements Initializable {
     private ProductService productService;
     private Product currentProduct;
     private int productId;
+    private Stage mainStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -153,6 +154,10 @@ public class ProductDetailController implements Initializable {
 
         reviewerImage1.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/carImages/rolls royce5.jpg"));
         reviewerImage2.setImage(loadProductImages("/org/charllson/ecormmerce_website/images/carImages/rolls royce6.jpg"));
+    }
+
+    public void setMainStage(Stage stage) {
+        this.mainStage = stage;
     }
 
     public void setProductId(int productId) {
@@ -571,7 +576,7 @@ public class ProductDetailController implements Initializable {
 
     public void openUserProfile(MouseEvent mouseEvent) {
         System.out.println("Moving to open user profile");
-        manageAuth.openUserProfile(mouseEvent);
+        manageAuth.openUserProfile(mouseEvent, mainStage);
     }
 }
 

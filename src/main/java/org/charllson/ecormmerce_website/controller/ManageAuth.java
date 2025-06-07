@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.charllson.ecormmerce_website.ui.UserProfileModal;
 import org.charllson.ecormmerce_website.utils.SessionManager;
 
@@ -15,14 +16,15 @@ public class ManageAuth {
     @FXML private Circle profileCircle;
     @FXML private ImageView profileImage;
 
+
     private final int userId = SessionManager.getInstance().getCurrentUserId();
 
     // Method called when profile container is clicked
-    public void openUserProfile(MouseEvent mouseEvent) {
+    public void openUserProfile(MouseEvent mouseEvent, Stage mainStage) {
         System.out.println("Current user id to open Modal: " + userId);
         if (userId != -1) {
             try {
-                UserProfileModal profileModal = new UserProfileModal(userId);
+                UserProfileModal profileModal = new UserProfileModal(userId, mainStage);
                 profileModal.show();
             } catch (Exception e) {
                 System.err.println("Error opening user profile: " + e.getMessage());
