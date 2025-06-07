@@ -27,6 +27,9 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
+    private Hyperlink forgetPassword;
+
+    @FXML
     private TextField visiblePasswordField;
 
     @FXML
@@ -142,11 +145,22 @@ public class LoginController implements Initializable {
 
     @FXML
     private void handleForgotPassword() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Forgot Password");
-        alert.setHeaderText(null);
-        alert.setContentText("Password reset functionality would be implemented here.");
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/forget-password.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) forgetPassword.getScene().getWindow();
+
+            // Create scene and set it on the stage
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading forget password view: " + e.getMessage());
+        }
     }
 
     @FXML

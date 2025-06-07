@@ -202,6 +202,36 @@ public class UserDb {
         }
     }
 
+    public static String resetPassword(String email, String rawPassword) {
+        try (Connection conn = DBUtil.getConnection()) {
+            // Check if user exists
+            String checkQuery = "SELECT * FROM users WHERE email = ?";
+            PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setString(1, email);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (!rs.next()) {
+                return "User with this email not found. Make sure you enter your previous email address!";
+            }
+
+            // Hash new password
+            String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+
+            // Update password
+            String updateQuery = "UPDATE users SET password = ? WHERE email = ?";
+            PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+            updateStmt.setString(1, hashedPassword);
+            updateStmt.setString(2, email);
+
+            int rows = updateStmt.executeUpdate();
+            return rows > 0 ? "success" : "Failed to update password.";
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Database error: " + e.getMessage();
+        }
+    }
+
 
 
 }
