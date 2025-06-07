@@ -42,8 +42,10 @@ public class ViewOrdersController {
     @FXML
     private TableColumn<OrderItemRow, Double> unitPriceColumn;
     @FXML
+    private Label totalItemsPriceLabel;
+    @FXML
     private Button backButton;
-    private String currentUserEmail; // Set this from login session or pass into this controller
+    private String currentUserEmail;
 
     @FXML
     public void initialize() {
@@ -69,6 +71,7 @@ public class ViewOrdersController {
 
     private void loadOrdersForUser(String email) {
         orderItemRows.clear();
+        double totalItemsPrice = 0.0;
 
         String sql = """
                     SELECT
@@ -110,7 +113,15 @@ public class ViewOrdersController {
                         rs.getDouble("unit_price")
                 );
                 orderItemRows.add(row);
+
+                // Sum up item total price per row
+                totalItemsPrice += rs.getDouble("item_total_price");
             }
+
+            // Update label text
+            final double totalPriceFinal = totalItemsPrice;
+            totalItemsPriceLabel.setText(String.format("Total of All Items: $%.2f", totalPriceFinal));
+
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Failed to load orders: " + e.getMessage());

@@ -40,6 +40,11 @@
                     <TableColumn fx:id="reasonColumn" text="Reason" prefWidth="200" />
                 </columns>
             </TableView>
+
+            <!-- New label to display total of all item prices -->
+            <Label fx:id="totalItemsPriceLabel"
+                   style="-fx-font-weight: bold; -fx-font-size: 16;"
+                   text="Total Price of All Ordered Items: $0.00" />
         </VBox>
     </center>
 
