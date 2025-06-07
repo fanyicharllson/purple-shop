@@ -7,12 +7,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -34,6 +33,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ProductCatalogController implements Initializable {
 
@@ -49,6 +49,8 @@ public class ProductCatalogController implements Initializable {
     private ImageView profileImage;
     @FXML
     private HBox categoryNav;
+    @FXML
+    private TextField searchField;
     @FXML
     private Label cartCount;
     @FXML
@@ -361,13 +363,49 @@ public class ProductCatalogController implements Initializable {
         populateProductGrid();
     }
 
-    // Method to handle search functionality (if you want to add it later)
+    // Method to handle search functionality
     @FXML
     private void handleSearch() {
-        // Implementation for search functionality
-        // This can be added later when you implement search
-        System.out.println("Search functionality - to be implemented");
+        String query = searchField.getText().trim().toLowerCase();
+        List<Product> filtered = productService.getAllProducts().stream()
+                .filter(p -> p.getName().toLowerCase().contains(query))
+                .collect(Collectors.toList());
+
+        updateProductGrid(filtered, query);
     }
+
+    @FXML
+    private void handleSearchKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleSearch();
+        }
+    }
+
+    private void updateProductGrid(List<Product> productsToShow, String query) {
+        productGrid.getChildren().clear();
+
+        if (productsToShow.isEmpty()) {
+            Label noResults = new Label("No products found for: \"" + query + "\"");
+            noResults.getStyleClass().add("no-results-label");
+            productGrid.getChildren().add(noResults);
+            return;
+        }
+
+        for (Product product : productsToShow) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/product-card.fxml"));
+                Parent card = loader.load();
+
+                ProductCardController controller = loader.getController();
+                controller.setProduct(product);  // Pass product to card
+                productGrid.getChildren().add(card);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
     @FXML

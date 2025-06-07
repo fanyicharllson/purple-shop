@@ -389,7 +389,7 @@
     -fx-max-width: 500px;
 }
 
-.search-field {
+/*.search-field {
     -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-prompt-text-fill: rgba(255, 255, 255, 0.7);
@@ -398,7 +398,7 @@
     -fx-background-radius: 20px 0 0 20px;
     -fx-background-insets: 0;
     -fx-border-width: 0;
-}
+}*/
 
 .search-button {
   -fx-background-color: transparent;
@@ -443,6 +443,12 @@
     -fx-translate-x: 8;
     -fx-translate-y: -8;
 }
+.no-results-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #888;
+    -fx-padding: 20;
+}
+
 
 /* Category Navigation *********************************************************************/
 .category-nav {

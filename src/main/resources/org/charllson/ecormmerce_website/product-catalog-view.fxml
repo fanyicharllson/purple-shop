@@ -41,8 +41,8 @@
                 <!-- Search Bar -->
                 <HBox styleClass="search-container" HBox.hgrow="ALWAYS" alignment="CENTER">
                     <TextField fx:id="searchField" promptText="Search products..." styleClass="search-field"
-                               HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="searchButton" styleClass="search-button">
+                               HBox.hgrow="ALWAYS" onKeyPressed="#handleSearchKeyPress"/>
+                    <Button fx:id="searchButton" styleClass="search-button" onAction="#handleSearch">
                         <graphic>
                             <Label text="🔍" styleClass="search-icon"/>
                         </graphic>
