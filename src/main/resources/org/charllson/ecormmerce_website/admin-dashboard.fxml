@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.charllson.ecormmerce_website.controller.AdminDashboardController"
+            style="-fx-background-color: linear-gradient(to bottom right, #ede9fe, #f3e8ff);" prefWidth="1000" prefHeight="600">
+
+    <top>
+        <HBox spacing="20" style="-fx-background-color: #6B21A8; -fx-padding: 20;" alignment="CENTER_LEFT">
+            <Label text="Welcome to Admin Order Management dashboard"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <HBox spacing="10">
+                <Label text="Filter by Status:"/>
+                <ComboBox fx:id="statusFilter" prefWidth="150"/>
+                <Label text="NB: Double click on the each table row to view it detail."
+                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: purple;" />
+            </HBox>
+
+            <TableView fx:id="adminOrdersTable" prefHeight="500" style="-fx-background-radius: 10;">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="Order ID" prefWidth="80"/>
+                    <TableColumn fx:id="emailColumn" text="User Email" prefWidth="160"/>
+                    <TableColumn fx:id="nameColumn" text="Full Name" prefWidth="120"/>
+                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="140"/>
+                    <TableColumn fx:id="paymentColumn" text="Payment" prefWidth="100"/>
+                    <TableColumn fx:id="totalColumn" text="Total ($)" prefWidth="100"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

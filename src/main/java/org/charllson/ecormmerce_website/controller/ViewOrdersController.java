@@ -120,7 +120,7 @@ public class ViewOrdersController {
 
             // Update label text
             final double totalPriceFinal = totalItemsPrice;
-            totalItemsPriceLabel.setText(String.format("Total of All Items: $%.2f", totalPriceFinal));
+            totalItemsPriceLabel.setText(String.format("Total Price of All Ordered Items: $%.2f", totalPriceFinal));
 
         } catch (Exception e) {
             e.printStackTrace();

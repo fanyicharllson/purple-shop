@@ -120,6 +120,27 @@ public class LoginController implements Initializable {
             alert.showAndWait();
             return;
         }
+        // check if user is admin
+        if(emailField.getText().trim().equals("admin@purpleShop.com") && passwordField.getText().trim().equals("supersecure123")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/charllson/ecormmerce_website/admin-dashboard.fxml"));
+                Parent root = loader.load();
+
+                // Get the current stage
+                Stage stage = (Stage) forgetPassword.getScene().getWindow();
+
+                // Create scene and set it on the stage
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/charllson/ecormmerce_website/styles/style.css")).toExternalForm());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Error loading admin dashboard view: " + e.getMessage());
+            }
+
+            return;
+        }
         // Attempt to authenticate user
         int userId = UserDb.authenticateUser(emailField.getText().trim(), passwordField.getText().trim());
 
